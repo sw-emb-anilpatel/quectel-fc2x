@@ -1,0 +1,18 @@
+#============================================================================
+#  Name:                                                                     
+#    QCA6174_SCAQBAFM_rampatch_libs.lf 
+#
+#  Description:                                                              
+#    None 
+#                                                                            
+# Copyright (c) 2020 by QUALCOMM, Incorporated.  All Rights Reserved.        
+#============================================================================
+#                                                                            
+# *** AUTO GENERATED FILE - DO NOT EDIT                                      
+#                                                                            
+# GENERATED: Mon Aug 17 20:28:12 2020 
+#============================================================================
+../../../../rampatch/bt/platform/coex/build/wcss_ram_uart_2.1.3.c1/cortex-m0/SCAQBAF/6174/MCI/src/patch_PFAL_COEX_MCI.o
+../../../../rampatch/bt/platform/coex/build/wcss_ram_uart_2.1.3.c1/cortex-m0/SCAQBAF/6174/MCI/src/patch_PFAL_COEX_MCI_HW.o
+../../../../rampatch/bt/platform/coex/build/wcss_ram_uart_2.1.3.c1/cortex-m0/SCAQBAF/6174/MWS/src/patch_PFAL_COEX_MWS.o
+../../../../rampatch/bt/platform/prod/build/wcss_ram_uart_2.1.3.c1/cortex-m0/SCAQBAF/6174/prod.lib

@@ -1,0 +1,23 @@
+#How to build athdiag
+cd athdiag/athdia/
+make
+
+#How to build cnssdiag
+cd cnssdiag_lite/
+make
+
+#How to build myftm
+cd myftm/ath6kl-utils/
+make
+
+#How to build pktlog
+cd pktlog/pktlog/
+make
+
+#How to build Qcmbr
+cd Qcmbr/
+make
+
+#How to build sigma_dut
+cd sigma_dut/
+make

@@ -1,0 +1,202 @@
+QUALCOMM Atheros
+Copyright (c) 2012-2013 by QUALCOMM Atheros, Inc.
+All Rights Reserved
+Qualcomm Atheros Confidential and Proprietary
+Notifications and licenses are retained for attribution        purposes only 
+=========================================================================================================================================
+QUALCOMM Incorporated
+Copyright (c) 2010 QUALCOMM Incorporated.
+All Rights Reserved.
+Qualcomm Confidential and Proprietary
+=========================================================================================================================================
+Qualcomm Technologies
+Copyright © 2011-2017 Qualcomm Technologies, Inc.
+2011 - 2015 Qualcomm Atheros, Inc.
+All Rights Reserved
+Confidential and Proprietary - Qualcomm Technologies, Inc.
+Notifications and licenses are retained for attribution purposes only
+=========================================================================================================================================
+Qualcomm Technology
+Copyright (c) 2011-2013 Qualcomm Technology, Inc.
+ * All Rights Reserved
+ * Qualcomm Technology Confidential and Proprietary.
+ * Notifications and licenses are retained for attribution purposes only
+=========================================================================================================================================
+QUALCOMM
+(i)Copyright (c) 2009 Qualcomm, Inc.  ALL RIGHTS RESERVED.
+Unpublished Confidential Information of Qualcomm, Inc.
+Do Not Disclose.
+No part of this work may be used or reproduced in any form or by any means, or stored in a database or 
+retrieval system, without prior written permission of Qualcomm, Inc.
+Use of this work is governed by a license granted by Qualcomm, Inc.
+This work is available by license only and is subject to all of the license restrictions.
+This work may not be used in any way not specifically permitted by such license.
+This work contains confidential and proprietary information of Qualcomm, Inc which is protected 
+by copyright, trade secret, trademark and other intellectual property rights.
+This copyright notice must be maintained in all derivative works
+(ii)Copyright (c) 2012-2013 by QUALCOMM, Incorporated.
+All Rights Reserved.
+QUALCOMM Proprietary/GTDR
+=========================================================================================================================================
+Aaron D. Gifford
+Copyright (c) 2000-2001, Aaron D. Gifford
+All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the copyright holder nor the names of contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTOR(S) ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTOR(S) BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+
+=========================================================================================================================================
+ARM Limited
+Copyright (C) 2009-2012 ARM Limited. All rights reserved.
+@par
+ARM Limited (ARM) is supplying this software for use with Cortex-M
+processor based microcontrollers.  This file can be freely distributed
+within development tools that are supporting such ARM based processors.
+ @par
+THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+=========================================================================================================================================
+Dynastream Innovations Inc
+Copyright (c) 2010 Dynastream Innovations Inc.
+## This software may not be reproduced by any means without express written 
+## approval of Dynastream Innovations Inc.
+=========================================================================================================================================
+Open Interface North America
+Copyright 2002 - 2004 Open Interface North America, Inc. 
+All rights reserved.
+=========================================================================================================================================
+Jean J. Labrosse, Plantation, FL
+(c) Copyright 1992-1998, Jean J. Labrosse, Plantation, FL                                       
+All Rights Reserved
+=========================================================================================================================================
+Micrium, Weston, FL
+(c) Copyright 2005-2009, Micrium, Weston, FL                                        
+All Rights Reserved
+=========================================================================================================================================
+Red Hat Inc
+Copyright 2009 Jerome Glisse
+* Copyright 2009 Red Hat Inc.
+*
+* Authors:
+*    Jerome Glisse
+*    Dave Airlie
+All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+• Redistributions of source code must retain the above copyright notice, this 
+list of conditions and the following disclaimer.
+• Redistributions in binary form must reproduce the above copyright notice, this 
+list of conditions and the following disclaimer in the documentation and/or other 
+materials provided with the distribution.
+• Neither the name of the <ORGANIZATION> nor the names of its contributors may 
+be used to endorse or promote products derived from this software without specific
+ prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY 
+OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+=========================================================================================================================================
+RF Micro Devices
+Copyright (c) 1999-2004 RF Micro Devices, Inc.  ALL RIGHTS RESERVED.
+Unpublished Confidential Information of RF Micro Devices, Inc.
+Do Not Disclose.
+No part of this work may be used or reproduced in any form or by any means, or stored
+ in a database or retrieval system, without prior written permission of RF Micro Devices, Inc.
+Use of this work is governed by a license granted by RF Micro Devices, Inc.
+This work is available by license only and is subject to all of the license restrictions.
+This work may not be used in any way not specifically permitted by such license.
+This work contains confidential and proprietary information of RF Micro Devices, Inc. 
+which is protected by copyright, trade secret, trademark and other intellectual property rights.
+This copyright notice must be maintained in all derivative works
+
+=========================================================================================================================================
+SnapTrack
+Copyright (C) 1999 SnapTrack, Inc.
+SnapTrack, Inc.
+4040 Moorpark Ave, Suite 250
+San Jose, CA  95117
+This program is confidential and a trade secret of SnapTrack, Inc.  The
+receipt or possession of this program does not convey any rights to reproduce 
+or disclose its contents or to manufacture, use or sell anything that this 
+program describes in whole or in part, without the express written consent of
+SnapTrack, Inc.  The recipient and/or possessor of this program shall not 
+reproduce or adapt or disclose or use this program except as expressly 
+allowed by a written authorization from SnapTrack, Inc.
+=========================================================================================================================================
+The OpenSSL Project
+Copyright (c) 1998-2002 The OpenSSL Project.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer. 
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. All advertising materials mentioning features or use of this
+ *    software must display the following acknowledgment:
+ *    "This product includes software developed by the OpenSSL Project
+ *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
+ *
+ * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ *    endorse or promote products derived from this software without
+ *    prior written permission. For written permission, please contact
+ *    openssl-core@openssl.org.
+ *
+ * 5. Products derived from this software may not be called "OpenSSL"
+ *    nor may "OpenSSL" appear in their names without prior written
+ *    permission of the OpenSSL Project.
+ *
+ * 6. Redistributions of any form whatsoever must retain the following
+ *    acknowledgment:
+ *    "This product includes software developed by the OpenSSL Project
+ *    for use in the OpenSSL Toolkit (http://www.openssl.org/)"
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE OpenSSL PROJECT ``AS IS'' AND ANY
+ * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE OpenSSL PROJECT OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+=========================================================================================================================================
+
