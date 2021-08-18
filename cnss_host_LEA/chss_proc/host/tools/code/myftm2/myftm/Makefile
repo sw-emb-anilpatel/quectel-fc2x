@@ -28,9 +28,9 @@ LIBS+= ../libathtestcmd/libathtestcmd.a\
 	../libtcmd/libtcmd.a\
 	../libathtestcmd/libtlvutil/libtlvutil.a\
 	../libathtestcmd/libtlv2/libtlv2.a\
-	../libnl-3.2.25/lib/libnl-3.a\
-	../libnl-3.2.25/lib/libnl-genl-3.a\
-	../zlib-1.2.11/lib/libz.a
+	/usr/lib/libnl-3.a\
+	/usr/lib/libnl-genl-3.a\
+	../zlib-1.2.11/libz.a
 
 .c.o:
 	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@

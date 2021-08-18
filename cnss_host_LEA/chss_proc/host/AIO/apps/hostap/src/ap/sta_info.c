@@ -1369,15 +1369,6 @@ void ap_sta_deauth_cb(struct hostapd_data *hapd, struct sta_info *sta)
 	sta->flags &= ~WLAN_STA_PENDING_DEAUTH_CB;
 	eloop_cancel_timeout(ap_sta_deauth_cb_timeout, hapd, sta);
 	ap_sta_deauth_cb_timeout(hapd, sta);
-	if (eloop_cancel_timeout(ap_sta_delayed_1x_auth_fail_cb, hapd, sta) > 0)
-	{
-		wpa_printf(MSG_DEBUG,
-			   "%s: Removed ap_sta_delayed_1x_auth_fail_cb timeout for "
-			   MACSTR,
-			   hapd->conf->iface, MAC2STR(sta->addr));
-		if (sta->flags & WLAN_STA_WPS)
-			hostapd_wps_eap_completed(hapd);
-	}
 }
 
 
@@ -1390,15 +1381,6 @@ void ap_sta_disassoc_cb(struct hostapd_data *hapd, struct sta_info *sta)
 	sta->flags &= ~WLAN_STA_PENDING_DISASSOC_CB;
 	eloop_cancel_timeout(ap_sta_disassoc_cb_timeout, hapd, sta);
 	ap_sta_disassoc_cb_timeout(hapd, sta);
-	if (eloop_cancel_timeout(ap_sta_delayed_1x_auth_fail_cb, hapd, sta) > 0)
-	{
-		wpa_printf(MSG_DEBUG,
-			   "%s: Removed ap_sta_delayed_1x_auth_fail_cb timeout for "
-			   MACSTR,
-			   hapd->conf->iface, MAC2STR(sta->addr));
-		if (sta->flags & WLAN_STA_WPS)
-			hostapd_wps_eap_completed(hapd);
-	}
 }
 
 
@@ -1485,7 +1467,7 @@ void ap_sta_delayed_1x_auth_fail_disconnect(struct hostapd_data *hapd,
 {
 	wpa_dbg(hapd->msg_ctx, MSG_DEBUG,
 		"IEEE 802.1X: Force disconnection of " MACSTR
-		" after EAP-Failure in 1 sec", MAC2STR(sta->addr));
+		" after EAP-Failure in 10 ms", MAC2STR(sta->addr));
 
 	/*
 	 * Add a small sleep to increase likelihood of previously requested
@@ -1493,7 +1475,7 @@ void ap_sta_delayed_1x_auth_fail_disconnect(struct hostapd_data *hapd,
 	 * operations.
 	 */
 	eloop_cancel_timeout(ap_sta_delayed_1x_auth_fail_cb, hapd, sta);
-	eloop_register_timeout(1, 10000, ap_sta_delayed_1x_auth_fail_cb,
+	eloop_register_timeout(0, 10000, ap_sta_delayed_1x_auth_fail_cb,
 			       hapd, sta);
 }
 

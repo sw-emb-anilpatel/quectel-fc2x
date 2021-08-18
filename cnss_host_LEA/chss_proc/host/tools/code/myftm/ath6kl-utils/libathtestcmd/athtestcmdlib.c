@@ -305,7 +305,7 @@ static void getIfName(char *ifname)
 	char ifprop[PROPERTY_VALUE_MAX];
 #endif
 	char *src;
-	char defIfname[IFNAMSIZ];
+	char defIfname[IFNAMSIZ] = {'\0'};
 	char linebuf[1024];
 	FILE *f = fopen("/proc/net/wireless", "r");
 	if (f) {

@@ -233,6 +233,11 @@ TLV_ENCODER_ENUM tlv2CreateCmdHeaderInternal(A_UINT32 maxSegSize, A_UINT32 maxSt
     //memcpy((void*)&(pInternalPayload[streamPos]), (void*)&numOfParms, sizeof(numOfParms));
     streamPos +=4;
     numParms = 0;
+    numSegments = streamPos / maxSegmentSize;
+    if (streamPos % maxSegmentSize)
+    {
+        numSegments++;
+    }
     return TLV_ENCODER_OK;
 }
 
@@ -562,7 +567,6 @@ TLV2_API TESTFLOW_CMD_STREAM_V2 *tlv2CompleteCmdRsp()
 
 TLV2_API TESTFLOW_CMD_STREAM_V2 *createCmdRsp(A_UINT32 cmdCode, int numArgs, ...)
 {
-    va_list args_read;
     va_list args;
     TLV_ENCODER_ENUM error;
     A_UINT16 streamLen;
@@ -580,9 +584,8 @@ TLV2_API TESTFLOW_CMD_STREAM_V2 *createCmdRsp(A_UINT32 cmdCode, int numArgs, ...
     if (numArgs < 0)
     {
         numArgs = 2;
-        va_start(args_read, numArgs);
-        numArgs = -va_arg(args_read, A_UINT32);
-        args = va_arg(args_read, va_list);
+        va_start(args, numArgs);
+        numArgs = -va_arg(args, A_UINT32);
         //A_PRINTF_ALWAYS("encoder, numArgs=%d\n", numArgs);
     }
     else
@@ -606,7 +609,6 @@ TLV2_API TESTFLOW_CMD_STREAM_V2 *createCmdRsp(A_UINT32 cmdCode, int numArgs, ...
 // return number of TLV2 stream segments
 TLV2_API A_UINT32 createCmdRspExt(A_UINT32 maxSegSize, A_UINT32 maxStreamSize, A_UINT32 cmdCode, int numArgs, ...)
 {
-    va_list args_read;
     va_list args;
     TLV_ENCODER_ENUM error;
 
@@ -623,9 +625,8 @@ TLV2_API A_UINT32 createCmdRspExt(A_UINT32 maxSegSize, A_UINT32 maxStreamSize, A
     if (numArgs < 0)
     {
         numArgs = 2;
-        va_start(args_read, numArgs);
-        numArgs = -va_arg(args_read, A_UINT32);
-        args = va_arg(args_read, va_list);
+        va_start(args, numArgs);
+        numArgs = -va_arg(args, A_UINT32);
         //A_PRINTF_ALWAYS("encoder, numArgs=%d\n", numArgs);
     }
     else

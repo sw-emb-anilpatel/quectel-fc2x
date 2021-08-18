@@ -48,6 +48,8 @@ LOCAL_SRC_FILES = \
                    cmdParser/cmdSetRegDmn.c \
                    cmdParser/cmdTPCCALHandler.c \
                    cmdParser/cmdTPCCALPWRHandler.c \
+                   cmdParser/cmdOfdmaTonePlan.c \
+                   cmdParser/cmdOfdmaULTxConfig.c \
                    cmdParser/cmdTxHandler.c \
                    cmdParser/cmdTxStatusHandler.c \
                    cmdParser/cmdXtalCalHandler.c \
@@ -59,11 +61,13 @@ LOCAL_SRC_FILES = \
                    cmdParser/sysCmdTestData.c \
                    cmdParser/sysCmdtlvCaptureCtrl.c \
                    cmdParser/cmdDPDLoopbackInfo.c \
+                   cmdParser/cmdRSTcalHandler.c \
                    common/cmdRspParmsDict.c \
                    common/cmdRspParmsInternal.c \
                    common/sysCmdRspParmsDict.c \
                    tlvcmdrsp/tlvCmdRsp.c \
-                   util/testUtil.c
+                   util/testUtil.c \
+                   cmdParser/cmdLowPowerMode.c
 
 LOCAL_C_INCLUDES += \
                         $(LOCAL_PATH)/include \

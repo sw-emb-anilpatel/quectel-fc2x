@@ -170,6 +170,7 @@ void clientHandler(void* arg)
 				"Error: stream too long (%d)... "
 				"closing socket\n", MAXSTREAMLENGTH);
 			flag_socketactive = 0;
+			break;
 		}
 
 		if (len_read > 0)
@@ -192,9 +193,12 @@ void clientHandler(void* arg)
 			//=========================================
 			// relay message to/from DUT
 			//-----------------------------------------
-			char tempbuf[MAXSTREAMLENGTH];
-			memcpy(&(tempbuf[0]), &rcvbuffer[4], len_read -4);
-			tcmd_tx(tempbuf, len_read - 4, 1);
+			if (len_read >= 4) {
+				char tempbuf[MAXSTREAMLENGTH];
+				memcpy(&(tempbuf[0]), &rcvbuffer[4], len_read -4);
+				tcmd_tx(tempbuf, len_read - 4, 1);
+			}
+
 			while (!replyReceived)
 			{
 				// wait for reply from DUT
@@ -232,7 +236,6 @@ void qtip()
 	int listenSocket, clientSocket, tempSocket;
 	struct sockaddr_in serverInf;
 	int port = 9877;
-	int i;
 	int flag_serverrunning = 1;
 	//verbose = 1;
 

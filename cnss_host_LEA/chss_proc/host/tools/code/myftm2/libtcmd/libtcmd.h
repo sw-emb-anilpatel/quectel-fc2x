@@ -43,6 +43,7 @@ enum tcmd_ep {
 struct tcmd_cfg {
 	char iface[100];
 	void (*rx_cb)(void *buf, int len);
+	void (*docommand_rx_cb)(void *buf, int len);
 #ifndef CONFIG_AR6002_REV6
 	uint32_t ep;
 #endif

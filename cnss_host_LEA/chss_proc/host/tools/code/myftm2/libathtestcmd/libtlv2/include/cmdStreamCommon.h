@@ -52,6 +52,9 @@
 // max segment size to UTF
 #define MAX_PAYLOAD_LEN                       1536
 
+// MAX_OFDMATONEPLAN_STREAM = CMD_OFDMATONEPLAN + PARM_PHYID + PARM_OFDMATONEPLAN
+#define MAX_OFDMATONEPLAN_STREAM              4284
+
 // test flow cmd stream ------------
 typedef struct testFlowCmdStreamHeader {
     A_UINT32    cmdId;  // reserve this for compatibility with TCMD..

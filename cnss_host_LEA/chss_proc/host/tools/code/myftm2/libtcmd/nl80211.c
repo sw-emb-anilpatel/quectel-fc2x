@@ -457,7 +457,11 @@ int nl80211_tcmd_rx(struct tcmd_cfg *cfg)
 	while (!cfg->timeout)
 		nl_recvmsgs(cfg->nl_handle, cb);
 
-	return tcmd_reset_timer(cfg);
+	if (!cfg->timeout)
+		return tcmd_reset_timer(cfg);
+	else
+		return 0;
+
 out:
 	return err;
 }

@@ -2980,7 +2980,7 @@ void process_cnss_fw_message(tAniCLDHdr *wnl, int32_t optionflag)
                                                           msg_qsr->hdr.ts_lo, msg_qsr->hdr.ts_hi);
 			p_entry = diag_find_by_id(msg_qsr->msg_hash, radio_id);
 			if (!p_entry) {
-				printf("Not find ID %d\n", msg_qsr->msg_hash);
+				printf("Not find ID %u\n", msg_qsr->msg_hash);
 				break;
 			}
 
@@ -2997,7 +2997,7 @@ void process_cnss_fw_message(tAniCLDHdr *wnl, int32_t optionflag)
 				    p_entry->pack,
 				    (uint8_t*)p_entry->msg,
 				    p_entry->msg_len);
-			printf("[%s][%llu.%llu][id/mask %d/%d][%-16.16s %4d]: %s\n",
+			printf("[%s][%llu.%llu][id/mask %d/%d][%-32.32s %4d]: %s\n",
                                 tmbuf, fw_time_us/1000000,fw_time_us%1000000,
 				msg_qsr->desc.ss_id, msg_qsr->desc.ss_mask,
 				p_entry->pack, msg_qsr->desc.line,  buf);

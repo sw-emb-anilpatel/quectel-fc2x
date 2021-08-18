@@ -59,7 +59,7 @@ OLD_DIR=`pwd`
 cd ${AIO_TOP}
 git clone git://codeaurora.org/external/sba/wlan_patches.git -b master wlan_patches
 cd wlan_patches
-git reset --hard 4da2d76c89759c317452a443d3d6b02dc1d71610
+git reset --hard 5098c8dc38d642ba7fcb60fd04a48bf4c3c4fd63
 
 if [ ${DOWNLOAD_LIBBT_VENDOR} == "y" ]
 then

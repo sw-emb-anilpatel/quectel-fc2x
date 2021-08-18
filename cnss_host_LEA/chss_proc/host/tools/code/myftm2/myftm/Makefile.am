@@ -25,9 +25,12 @@ c_sources = myftm_main.c \
             myftm_wlan.c \
             myftm_qtip.c
 
+AM_CFLAGS += -lnl-3 -lnl-genl-3
 requiredlibs += -lz ../libathtestcmd/libtestcmd6174.a \
                ../libathtestcmd/libtlvutil/libtlvutil.a \
-               ../libtcmd/libtcmd.a
+               ../libathtestcmd/libtlv2/libtlv2.a \
+               ../libtcmd/libtcmd.a \
+			   -lnl-3 -lnl-genl-3 -lrt
 
 myftm_LDADD = $(requiredlibs)
 myftm_SOURCES = $(c_sources)

@@ -234,4 +234,19 @@ TLV2_API void registerSARRSPHandler(SARRSP_OP_FUNC fp);
 TLV2_API void registerDPDLOOPBACKINFOHandler(DPDLOOPBACKINFO_OP_FUNC fp);
 TLV2_API void registerDPDLOOPBACKINFORSPHandler(DPDLOOPBACKINFORSP_OP_FUNC fp);
 
+#include "cmdOfdmaTonePlan.h"
+TLV2_API void registerOFDMATONEPLANHandler(OFDMATONEPLAN_OP_FUNC fp);
+TLV2_API void registerOFDMATONEPLANRSPHandler(OFDMATONEPLANRSP_OP_FUNC fp);
+
+#include "cmdOfdmaULTxConfig.h"
+TLV2_API void registerOFDMAULTXCONFIGHandler(OFDMAULTXCONFIG_OP_FUNC fp);
+TLV2_API void registerOFDMAULTXCONFIGRSPHandler(OFDMAULTXCONFIGRSP_OP_FUNC fp);
+
+#include "cmdLowPowerMode.h"
+TLV2_API void registerSETLOWPOWERHandler(SETLOWPOWER_OP_FUNC fp);
+
+#include "cmdRSTcalHandler.h"
+TLV2_API void registerRSTHandler(RST_OP_FUNC fp);
+TLV2_API void registerRSTRSPHandler(RSTRSP_OP_FUNC fp);
+
 #endif // _TLV2_API_H_ - This is the marker line. Don't modify or delete this line

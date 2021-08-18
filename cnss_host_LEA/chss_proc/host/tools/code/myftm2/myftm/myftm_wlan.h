@@ -5,7 +5,7 @@
 Description
   The header file includes enums, struct definitions for WLAN FTM packets
 
- Copyright (c) 2010, 2014-2018 Qualcomm Technologies, Inc.
+ Copyright (c) 2010, 2014-2020 Qualcomm Technologies, Inc.
  All Rights Reserved.
  Confidential and Proprietary - Qualcomm Technologies, Inc.
 ===========================================================================*/
@@ -143,6 +143,29 @@ typedef enum
 	MYFTM_OPT_PRM_FLAG_DPD = 507,
 	MYFTM_OPT_CMD_SETREGDMN = 508,
 	MYFTM_OPT_CMD_DPDSTATUS = 509,
+	MYFTM_OPT_CMD_SET_RATEBW = 510,
+	MYFTM_OPT_CMD_SET_NSS = 511,
+	MYFTM_OPT_CMD_SET_GI = 512,
+	MYFTM_OPT_CMD_SET_OFDM_ADCM = 513,
+	MYFTM_OPT_CMD_SET_OFDM_PPDU_TYPE = 514,
+	MYFTM_OPT_CMD_SET_OFDM_LINKDIR = 515,
+	MYFTM_OPT_CMD_SET_OFDMA_TONEPLAN = 516,
+	MYFTM_OPT_CMD_SET_PREFECPAD = 517,
+	MYFTM_OPT_CMD_SET_LDPCEXTRASYMBOL = 518,
+	MYFTM_OPT_CMD_SET_OFDMAUL_TXCONFIG = 519,
+	MYFTM_OPT_CMD_SET_DUTYCYCLE = 520,
+	MYFTM_OPT_CMD_READ_REGISTER = 521,
+	MYFTM_OPT_CMD_WRITE_REGISTER = 522,
+	MYFTM_OPT_CMD_WRT_REGISTER_VAL = 523,
+	MYFTM_OPT_CMD_SET_LOWPOWER = 524,
+	MYFTM_OPT_CMD_SET_LOWPOWER_MODE = 525,
+	MYFTM_OPT_CMD_SET_PHYIDMASK = 526,
+	MYFTM_OPT_CMD_SET_LOWPOWER_FEATUREMASK = 527,
+	MYFTM_OPT_CMD_SET_CALTXGAIN = 528,
+	MYFTM_OPT_CMD_SET_FORCEDRXIDX = 529,
+	MYFTM_OPT_CMD_SET_DACGAIN = 530,
+	MYFTM_OPT_CMD_SET_RSTDIR = 531,
+	MYFTM_OPT_CMD_RST = 532,
 } myftm_cmd_line_options;
 
 /*Enable WIFI, return value:  success: 0 fail: -1 */
@@ -220,6 +243,48 @@ void WlanATCmdFlagDPDEnable();
 void WlanATCmdSETREGDMN(char *val);
 /* Command DPDStatus */
 void WlanATCmdDPDStatus();
+/* Command rateBw */
+void WlanATCmdSETRateBW(uint8_t val);
+/* Command nss */
+void WlanATCmdSETNSS(uint8_t val);
+/* Command nss */
+void WlanATCmdSETGI(uint8_t val);
+/* Command pfdmadcm */
+void WlanATCmdSETADCM(uint8_t val);
+/* Command ofdmappdutype */
+void WlanATCmdSETPPDUTYPE(uint8_t val);
+/* Command ofdmalinkdir */
+void WlanATCmdSETLINKDIR(uint8_t val);
+/* Command SETOFDMA TONEPLAN */
+int WlanATCmdSET_TONEPLAN(char *val);
+/* Command SET OFDMA UPLINK TX CONFIG */
+int WlanATCmdSET_OFDMAULTX();
+
+/*Command prefecpad */
+void WlanATCmdSET_PREFECPAD(uint8_t val);
+
+/*Command ldpc extra symbol */
+void WlanATCmdSET_LDPCEXTRASYMBOL(uint8_t val);
+
+/*Command ldpc extra symbol */
+void WlanATCmdSET_DUTYCYCLE(uint8_t val);
+
+/* Command read/write value from/to Register */
+void WlanATCmdWRITE_REGVAL(uint32_t val);
+int WlanATCmdWRITE_REGISTER(uint32_t reg);
+int WlanATCmdREAD_REGISTER(uint32_t reg);
+
+/*Command to configured low power mode */
+int WlanATCmdSET_LOWPOWER();
+void WlanATCmdSET_LOWPOWER_MODE(char *val);
+void WlanATCmdSET_PHYIDMASK(uint8_t val);
+void WlanATCmdSET_LOWEPOWER_FEATUREMASK(uint32_t mask);
+
+/* Commands for RSSI self test */
+void WlanATCmdSET_CALTXGAIN(uint32_t val);
+void WlanATCmdSET_FORCEDRXIDX(uint32_t val);
+void WlanATCmdSET_RSTDIR(uint8_t val);
+void WlanATCmd_RST();
 
 /* for unit test of test usage */
 void unittest(void);

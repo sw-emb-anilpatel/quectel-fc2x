@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2020 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2013-2021 The Linux Foundation. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -114,6 +114,8 @@
 #include "adf_trace.h"
 
 #include "wlan_hdd_spectral.h"
+
+#include "ol_rx_reorder.h"
 /* ################### defines ################### */
 /*
  * TODO: Following constant should be shared by firwmare in
@@ -2841,9 +2843,17 @@ static void wma_update_peer_stats(tp_wma_handle wma, wmi_peer_stats *peer_stats)
 					peer_stats->peer_tx_rate/500;
 			}
 
-			classa_stats->tx_rate_flags = node->rate_flags;
+			WMA_LOGD("peer rx rate:%d", peer_stats->peer_rx_rate);
+			/*The linkspeed returned by fw is in kbps so convert
+			 *it in to units of 500kbps which is expected by UMAC*/
+			if (peer_stats->peer_rx_rate) {
+				classa_stats->rx_rate =
+					peer_stats->peer_rx_rate/500;
+			}
+
+			classa_stats->tx_rx_rate_flags = node->rate_flags;
                         if (!(node->rate_flags & eHAL_TX_RATE_LEGACY)) {
-				classa_stats->mcs_index =
+				classa_stats->tx_mcs_index =
 					wma_get_mcs_idx((peer_stats->peer_tx_rate/100),
 							node->rate_flags,
 							node->nss,
@@ -2854,6 +2864,12 @@ static void wma_update_peer_stats(tp_wma_handle wma, wmi_peer_stats *peer_stats)
 				 * rate flags */
 				classa_stats->rx_frag_cnt = node->nss;
 				classa_stats->promiscuous_rx_frag_cnt = mcsRateFlags;
+
+				classa_stats->rx_mcs_index =
+					wma_get_mcs_idx((peer_stats->peer_rx_rate/100),
+							node->rate_flags,
+							node->nss,
+							&mcsRateFlags);
 			}
 			/* FW returns tx power in intervals of 0.5 dBm
 			   Convert it back to intervals of 1 dBm */
@@ -22142,6 +22158,12 @@ static void wma_set_stakey(tp_wma_handle wma_handle, tpSetStaKeyParams key_info)
 			goto out;
 		}
 	}
+
+        WMA_LOGD("%s: QSV2020002, vid(%u), rx cleanup for peer(%pM) after key install",
+            __func__,
+            txrx_vdev->vdev_id,
+            peer->mac_addr.raw);
+        ol_rx_reorder_peer_cleanup(txrx_vdev, peer);
 
         /* In IBSS mode, set the BSS KEY for this peer
          ** BSS key is supposed to be cache into wma_handle

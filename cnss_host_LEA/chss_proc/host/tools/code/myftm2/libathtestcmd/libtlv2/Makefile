@@ -56,6 +56,10 @@ SRCS = \
 		cmdParser/sysCmdTestData.c \
 		cmdParser/sysCmdtlvCaptureCtrl.c \
 		cmdParser/cmdDPDLoopbackInfo.c \
+		cmdParser/cmdRSTcalHandler.c \
+		cmdParser/cmdOfdmaTonePlan.c \
+		cmdParser/cmdOfdmaULTxConfig.c \
+		cmdParser/cmdLowPowerMode.c \
 		common/cmdRspParmsDict.c \
 		common/cmdRspParmsInternal.c \
 		common/sysCmdRspParmsDict.c \
@@ -120,7 +124,11 @@ OBJS = \
 		cmdRspParmsInternal.o \
 		sysCmdRspParmsDict.o \
 		tlvCmdRsp.o \
-		testUtil.o
+		testUtil.o \
+		cmdRSTcalHandler.o \
+		cmdOfdmaTonePlan.o \
+		cmdOfdmaULTxConfig.o \
+		cmdLowPowerMode.o \
 
 INCLUDES := -I$(LOCAL_PATH)/include\
 		-I$(LOCAL_PATH)/cmdEncoder\

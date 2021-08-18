@@ -2,13 +2,13 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_CLANG := true
-LOCAL_PROPRIETARY_MODULE := true
-LOCAL_C_INCLUDES += $(TARGET_OUT_HEADERS)/libtcmd \
-			  $(LOCAL_PATH)/../libathtestcmd \
-			  $(LOCAL_PATH)/../libathtestcmd/include \
-			  $(LOCAL_PATH)/libtlvutil \
-			  $(LOCAL_PATH)/libtlvutil/common \
-			  external/zlib \
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../libathtestcmd \
+                    $(LOCAL_PATH)/../libathtestcmd/include \
+                    $(LOCAL_PATH)/libtlvutil \
+                    $(LOCAL_PATH)/libtlvutil/common \
+                    external/zlib \
+
+LOCAL_HEADER_LIBRARIES := libtcmd_headers
 
 LOCAL_MODULE := myftm
 BOARD_HAS_ATH_WLAN_AR6320:= true
@@ -42,5 +42,6 @@ LOCAL_SHARED_LIBRARIES += libnl
 endif
 
 LOCAL_MODULE_OWNER := qti
+LOCAL_SANITIZE := integer_overflow
 
 include $(BUILD_EXECUTABLE)

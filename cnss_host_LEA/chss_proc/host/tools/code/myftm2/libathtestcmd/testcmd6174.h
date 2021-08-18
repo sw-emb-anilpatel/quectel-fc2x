@@ -41,7 +41,38 @@ extern "C" {
 #define ATH_MAC_LEN 6
 #endif
 
- typedef struct _cmdParmeter{
+#ifndef MAX_DATA_LEN
+#define MAX_DATA_LEN 74
+#endif
+
+#ifndef MAX_RU_INDEX
+#define MAX_RU_INDEX 8
+#endif
+
+#ifndef MAX_CLI_VAL
+#define MAX_CLI_VAL 5000
+#endif
+
+typedef struct __attribute__((__packed__)) {
+	uint8_t version;                        // Make it 684 bytes
+	uint8_t bandwidth;                      // 1 - 74 (depends on RU allocation indices)
+	uint8_t AllocIndx[MAX_RU_INDEX];        // 1 - 8 RU allocation indices (depends on bandwidth)
+	uint8_t AllocRUs[MAX_RU_INDEX];         // 1 - 8 RU allocation indices (depends on bandwidth)
+	uint8_t MCS[MAX_DATA_LEN];              // MCS 0-11
+	uint8_t FEC[MAX_DATA_LEN];              // LDPC or BCC
+	uint8_t NSS[MAX_DATA_LEN];              // Spatial streams 1-8 (NA for HK defaults to 1), default = 1
+	uint8_t boost[MAX_DATA_LEN];            // Default = 0, TonePlanWizard float * 8
+	uint8_t ID[MAX_DATA_LEN];               // 1..255 simulated AID
+	// Newer fields
+	uint16_t payloadLen[MAX_DATA_LEN];      // Default = 1500, V2 only
+	uint16_t packetExt[MAX_DATA_LEN];
+	uint16_t nHE_LTF_Symbol[MAX_DATA_LEN];
+	uint8_t ltfGI[MAX_DATA_LEN];
+	uint8_t Rsvd1[MAX_DATA_LEN];            // Reserved for future use, V2 only
+	uint8_t Rsvd2[MAX_DATA_LEN];            // Reserved for future use, V2 only
+} TLV2_OFDMATONEPLAN_PARMS;
+
+typedef struct _cmdParmeter{
 	int isTxStart;
 	int isRxStart;
 
@@ -97,6 +128,24 @@ extern "C" {
 	uint32_t sar_ofdm2glimit;
 	uint32_t sar_ofdm5glimit;
 	uint32_t enable_dpd_flag;
+	uint8_t rateBw;
+	uint8_t nss;
+	uint8_t gi;
+	uint8_t ofdmadcm;
+	uint8_t ofdmappdutype;
+	uint8_t ofdmalinkdir;
+	uint8_t fecpad;
+	uint8_t ldpc_exsymbol;
+	uint8_t duty_cycle;
+	uint32_t regval;
+	TLV2_OFDMATONEPLAN_PARMS toneplan;
+	uint8_t lopwr_mode;
+	uint8_t phyid_mask;
+	uint32_t lpwr_fwmask;
+	uint8_t wifistandard;
+	uint8_t rstDir;
+	uint32_t calTxGain;
+	uint32_t forcedRXIdx;
 }_CMD_PARM;
 
 
@@ -175,6 +224,30 @@ void qca6174CmdSAROFDM5gLimit(char *);
 void qca6174CmdFlagDPDEnable();
 void qca6174CmdSETREGDMN(char *val);
 int qca6174CmdDPDStatus();
+void qca6174CmdRateBW(uint8_t val);
+void qca6174CmdNSS(uint8_t val);
+void qca6174CmdGI(uint8_t val);
+void qca6174CmdADCM(uint8_t val);
+void qca6174CmdPPDUTYPE(uint8_t val);
+void qca6174CmdLINKDIR(uint8_t val);
+int qca6174Cmd_TONEPLAN(char *val);
+void qca6174Cmd_PREFECPAD(uint8_t val);
+void qca6174Cmd_LDPCEXTRASYMBOL(uint8_t val);
+void qca6174Cmd_DUTYCYCLE(uint8_t val);
+int qca6174Cmd_OFDMAUL_TX();
+void qca6174CmdRegWriteValue(uint32_t val);
+int qca6174CmdRegWrite(uint32_t reg);
+int qca6174CmdRegRead(uint32_t reg);
+int qca6174Cmd_LOWPOWER();
+void qca6174Set_LOWPOWER_MODE(char *val);
+void qca6174Set_PHYIDMASK(uint8_t val);
+void qca6174Set_LOWPOWER_FEATUREMASK(uint32_t mask);
+void qca6174Set_CALTXGAIN(uint32_t val);
+void qca6174Set_FORCEDRXIDX(uint32_t val);
+void qca6174Set_RSTDIR(uint8_t val);
+void handleRstRSP(void *parms);
+void qca6174RssiSelfTest();
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

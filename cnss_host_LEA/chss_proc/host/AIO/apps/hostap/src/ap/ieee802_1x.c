@@ -2599,7 +2599,7 @@ int ieee802_1x_eapol_tx_status(struct hostapd_data *hapd, struct sta_info *sta,
 	    ap_sta_pending_delayed_1x_auth_fail_disconnect(hapd, sta)) {
 		wpa_printf(MSG_DEBUG,
 			   "WPS: Indicate EAP completion on ACK for EAP-Failure");
-		//hostapd_wps_eap_completed(hapd);
+		hostapd_wps_eap_completed(hapd);
 	}
 #endif /* CONFIG_WPS */
 

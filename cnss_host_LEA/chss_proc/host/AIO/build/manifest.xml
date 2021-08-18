@@ -1,10 +1,10 @@
 <config>
   <image_tree>
     <name>CNSS.LEA_TFH.3.0</name>
-    <build_id>CNSS.LEA_TFH.3.0-00030-QCA9377LEATFHZ-1</build_id>
+    <build_id>CNSS.LEA_TFH.3.0-00031-QCA9377LEATFHZ-4</build_id>
     <branch_point_revision/>
-    <revision>00030</revision>
-    <spin>1</spin>
+    <revision>00031</revision>
+    <spin>4</spin>
     <client>QCA9377LEATFHZ</client>
   </image_tree>
 </config>

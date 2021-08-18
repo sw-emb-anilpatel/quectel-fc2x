@@ -68,6 +68,8 @@
 #include "cmdLMQueryHandler.h"
 #include "cmdSARHandler.h"
 #include "cmdDPDLoopbackInfo.h"
+#include "cmdOfdmaTonePlan.h"
+#include "cmdOfdmaULTxConfig.h"
 //auto-updated marker - no #include statement after this line (DON'T REMOVE THIS LINE)
 
 // union of all cmd parm structure
@@ -155,6 +157,10 @@ typedef struct cmdAllParms {
         CMD_LMQUERYRSP_PARMS		 rspLMQUERYRSPParms;
         CMD_SAR_PARMS			 cmdSARParms;
         CMD_SARRSP_PARMS		 rspSARRSPParms;
+        CMD_OFDMATONEPLAN_PARMS          cmdOFDMATONEPLANParms;
+        CMD_OFDMATONEPLANRSP_PARMS       rspOFDMATONEPLANRSPParms;
+        CMD_RST_PARMS		 cmdRSTParms;
+        CMD_RSTRSP_PARMS		 rspRSTRSPParms;
     } __ATTRIB_PACK cmdParmU;
 
 } __ATTRIB_PACK CMD_ALL_PARMS;

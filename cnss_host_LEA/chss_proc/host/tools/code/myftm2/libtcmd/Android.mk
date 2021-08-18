@@ -1,5 +1,11 @@
 LOCAL_PATH:=$(call my-dir)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := libtcmd_headers
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_PROPRIETARY_MODULE := true
+include $(BUILD_HEADER_LIBRARY)
+
 # Build libtcmd =========================
 include $(CLEAR_VARS)
 
@@ -9,6 +15,10 @@ LOCAL_SRC_FILES:= \
     nl80211.c \
     libtcmd.c \
     os.c
+
+ifeq ($(PRODUCT_VENDOR_MOVE_ENABLED), true)
+LOCAL_PROPRIETARY_MODULE := true
+endif
 
 ifeq ($(BOARD_HAS_ATH_WLAN_AR6004),true)
 	LOCAL_CFLAGS+= -DCONFIG_AR6002_REV6
@@ -41,5 +51,6 @@ endif
 
 
 LOCAL_MODULE_OWNER := qcom
+LOCAL_SANITIZE := signed-integer-overflow unsigned-integer-overflow
 
 include $(BUILD_STATIC_LIBRARY)

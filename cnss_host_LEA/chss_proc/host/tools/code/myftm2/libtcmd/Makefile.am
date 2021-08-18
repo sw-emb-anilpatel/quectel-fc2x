@@ -12,6 +12,7 @@ c_sources = os.c \
             nl80211.c \
             libtcmd.c
 
+AM_CFLAGS += -DWLAN_API_NL80211
 lib_LIBRARIES  = libtcmd.a
 libtcmd_a_SOURCES = $(c_sources)
 libtcmd_a_LDFLAGS = -static

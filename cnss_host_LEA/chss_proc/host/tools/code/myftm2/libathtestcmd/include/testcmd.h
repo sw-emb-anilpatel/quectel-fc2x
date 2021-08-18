@@ -64,6 +64,10 @@
 #define PROCESS_RATE_IN_ORDER_SHIFT 4
 #define RX_STATUS_PER_RATE_MASK     0x00000020
 #define RX_STATUS_PER_RATE_SHIFT    5
+#define PROCESS_RATE_NONBITMASK_MASK     0x00000040
+#define PROCESS_RATE_NONBITMASK_SHIFT    6
+#define TCMD_SET_OFDMA_MASK         0x00000100
+#define TCMD_SET_OFDMA_SHIFT        8
 
 #define HALF_SPEED_MODE         50
 #define QUARTER_SPEED_MODE      51
@@ -134,7 +138,7 @@ typedef	struct TxDataStartParams {
 	uint16_t                gainIdx;
 	int16_t                 dacGain;
 	uint32_t                forcedGainPad;
-	uint32_t                dutycycle;
+	uint8_t                 dutycycle;
 	uint16_t                paConfig;
 } __ATTRIB_PACK TX_DATA_START_PARAMS;
 

@@ -1,5 +1,11 @@
 /*
-* Copyright (c) 2011-2012, 2016 Qualcomm Atheros Inc. All Rights Reserved.
+ * Copyright (c) 2019 Qualcomm Technologies, Inc.
+ * All Rights Reserved.
+ * Confidential and Proprietary - Qualcomm Technologies, Inc.
+*/
+
+/*
+* 2011-2012, 2016 Qualcomm Atheros Inc. All Rights Reserved.
 * Qualcomm Atheros Proprietary and Confidential.
 */
 
@@ -77,6 +83,14 @@ static int tcmd_set_ep(uint32_t *driv_ep, enum tcmd_ep ep)
 	return nl80211_set_ep(driv_ep, ep);
 #endif
 }
+
+void tcmd_response_cb(void *buf, int len)
+{
+	tcmd_cfg.timeout = true;
+	tcmd_reset_timer(&tcmd_cfg);
+	tcmd_cfg.docommand_rx_cb(buf, len);
+}
+
 int tcmd_init(char *iface, void (*rx_cb)(void *buf, int len), ...)
 {
 	int err;
@@ -87,7 +101,8 @@ int tcmd_init(char *iface, void (*rx_cb)(void *buf, int len), ...)
 	va_end(ap);
 
 	strlcpy(tcmd_cfg.iface, iface, sizeof(tcmd_cfg.iface));
-	tcmd_cfg.rx_cb = rx_cb;
+	tcmd_cfg.docommand_rx_cb = rx_cb;
+	tcmd_cfg.rx_cb = tcmd_response_cb;
 	err = tcmd_set_ep(&tcmd_cfg.ep, ep);
 	if (err)
 		return err;

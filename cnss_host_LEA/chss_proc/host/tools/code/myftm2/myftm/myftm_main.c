@@ -6,7 +6,7 @@ Description
   Unit test component file for regsitering the routines to Diag library
   for BT and FTM commands
 
-# Copyright (c) 2012-2018  Qualcomm Technologies, Inc.
+# Copyright (c) 2012-2020  Qualcomm Technologies, Inc.
 # All Rights Reserved.
 # Qualcomm Technologies Proprietary and Confidential.
 
@@ -75,6 +75,7 @@ static void usage(void)
 		"       wlan adapter name (wlan, eth, etc.) default wlan\n"
 #endif
 		"   -B  <dbs/phya/phyb/sbs> (Phy RF Mode)\n"
+		"   -D  <DAC GAIN>\n"
 		"   -H  <0/1/2> (RX Mode)\n"
 		"   -I  <0/1> (Phy Id)\n"
 		"   -J  (TLV 2.0 Messages)\n"
@@ -94,7 +95,30 @@ static void usage(void)
 		"   --dpdflag (enable) \n"
 		"   --regdomain <00:01> (Two reg domain values)\n"
 		"   --dpdstatus \n"
-		"   --help          display this help and exit\n"
+		"   --rateBw <set bandwidth>\n"
+		"   --nss <set nss>\n"
+		"   --gI <set shortgi>\n"
+		"   --dcm <set ofdma dcm>\n"
+		"   --ppdutype <set ofdma ppdutype>\n"
+		"   --linkdir  <set ofdma link direction>\n"
+		"   --toneplan <set ofdma toneplan params>\n"
+		"   --fecpad <set prefecpad params>\n"
+		"   --ldpc <set extra symbol for ldpc>\n"
+		"   --ulofdmat <set ofdma uplink transmmit config>\n"
+		"   --dutycl <set duty cycle>\n"
+		"   --regw <set register address>\n"
+		"   --regd <read register address>\n"
+		"   --regval <write value to register address>\n"
+		"   --lowpower <set low power config for phyid>\n"
+		"   --lpw_mode <set low power mode>\n"
+		"   --phyidmask <set phyid mask>\n"
+		"   --lpwfmsk   <set feature mask>\n"
+		"   --caltxgain <Gain (RF gain for WCN) for open loop power control mode>\n"
+		"   --forcedrxidx <set Forced RX gain index>\n"
+		"   --rstdir <set RSSI self test direction, 0: chain0 to chain1 1: chain1 to chain0>\n"
+		"   --rst  <RSSI self test (need to enable dbs mode before this test\n"
+		"           per cmd myftm -J -B dbs)>\n"
+		"   --help   display this help and exit\n"
 		, progname);
 		exit(EXIT_FAILURE);
 }
@@ -183,10 +207,33 @@ int main(int argc, char *argv[])
 		{"dpdflag", no_argument, NULL, MYFTM_OPT_PRM_FLAG_DPD},
 		{"regdomain", required_argument, NULL, MYFTM_OPT_CMD_SETREGDMN},
 		{"dpdstatus", no_argument, NULL, MYFTM_OPT_CMD_DPDSTATUS},
+		{"rateBw", required_argument, NULL, MYFTM_OPT_CMD_SET_RATEBW},
+		{"nss", required_argument, NULL, MYFTM_OPT_CMD_SET_NSS},
+		{"gI", required_argument, NULL, MYFTM_OPT_CMD_SET_GI},
+		{"dcm", required_argument, NULL, MYFTM_OPT_CMD_SET_OFDM_ADCM},
+		{"ppdutype", required_argument, NULL, MYFTM_OPT_CMD_SET_OFDM_PPDU_TYPE},
+		{"linkdir", required_argument, NULL, MYFTM_OPT_CMD_SET_OFDM_LINKDIR},
+		{"toneplan", required_argument, NULL, MYFTM_OPT_CMD_SET_OFDMA_TONEPLAN},
+		{"fecpad", required_argument, NULL, MYFTM_OPT_CMD_SET_PREFECPAD},
+		{"ldpc", required_argument, NULL, MYFTM_OPT_CMD_SET_LDPCEXTRASYMBOL},
+		{"ulofdmat", no_argument, NULL, MYFTM_OPT_CMD_SET_OFDMAUL_TXCONFIG},
+		{"dutycl", required_argument, NULL, MYFTM_OPT_CMD_SET_DUTYCYCLE},
+		{"regw", required_argument, NULL, MYFTM_OPT_CMD_WRITE_REGISTER},
+		{"regd", required_argument, NULL, MYFTM_OPT_CMD_READ_REGISTER},
+		{"regval", required_argument, NULL, MYFTM_OPT_CMD_WRT_REGISTER_VAL},
+		{"lowpower", no_argument, NULL, MYFTM_OPT_CMD_SET_LOWPOWER},
+		{"lpw_mode", required_argument, NULL, MYFTM_OPT_CMD_SET_LOWPOWER_MODE},
+		{"phyidmask", required_argument, NULL, MYFTM_OPT_CMD_SET_PHYIDMASK},
+		{"lpwfmsk", required_argument, NULL, MYFTM_OPT_CMD_SET_LOWPOWER_FEATUREMASK},
+		{"caltxgain", required_argument, NULL, MYFTM_OPT_CMD_SET_CALTXGAIN},
+		{"forcedrxidx", required_argument, NULL, MYFTM_OPT_CMD_SET_FORCEDRXIDX},
+		{"rstdir", required_argument, NULL, MYFTM_OPT_CMD_SET_RSTDIR},
+		{"rst", no_argument, NULL, MYFTM_OPT_CMD_RST},
 		{0, 0, 0, 0}
 	};
 	int daemonize = 0;
 	int int_parm = 0;
+	uint32_t t_val = 0;
 	WLAN_AT_WIFREQ_STRU freq_parm;
 	progname = argv[0];
 
@@ -196,8 +243,9 @@ int main(int argc, char *argv[])
 	while (1) {
 		c = getopt_long(argc, argv,
 				"hdi:nb:e:Em:S:w:Wr:Rg:f:p:Pqt:Tua:Ax:s:C:c:D"
-				":k:G:j:y:z:lL:M:B:H:I:JN:O:o:Q:X:Y:U: ",
-				options, NULL);
+				":k:G:j:y:z:lL:M:B:H:I:JN:O:o:Q:X:Y:U:rateBw:nss:gI:dcm:ppdutype:linkdir:toneplan:"
+				"fecpad:ldpc:dutycl:lpw_mode:phyidmask:lowpower "
+				"lpwfmsk:ulofdmat ",options, NULL);
 
 		if (c < 0)
 			break;
@@ -478,6 +526,156 @@ int main(int argc, char *argv[])
 			case MYFTM_OPT_CMD_DPDSTATUS:
 				fprintf(stderr, "Command dpdstatus\n");
 				WlanATCmdDPDStatus();
+				break;
+
+			case MYFTM_OPT_CMD_SET_RATEBW:
+				fprintf(stderr, "Command rateBw\n");
+				WlanATCmdSETRateBW(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_NSS:
+				fprintf(stderr, "Command nss\n");
+				WlanATCmdSETNSS(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_GI:
+				fprintf(stderr, "Command gI\n");
+				WlanATCmdSETGI(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_OFDM_ADCM:
+				fprintf(stderr, "Command ofdm adcm\n");
+				WlanATCmdSETADCM(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_OFDM_PPDU_TYPE:
+				fprintf(stderr, "Command ofdm ppdu type\n");
+				WlanATCmdSETPPDUTYPE(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_OFDM_LINKDIR:
+				fprintf(stderr, "Command odfm linkdir\n");
+				WlanATCmdSETLINKDIR(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_OFDMA_TONEPLAN:
+				fprintf(stderr, "WlanATCmdSET_TONEPLAN using athtestcmdlib\n");
+				if (0 != WlanATCmdSET_TONEPLAN(optarg)) {
+					fprintf(stderr, "WlanATCmdSET_TONEPLAN failed!\n");
+					exit(EXIT_FAILURE);
+				}
+				fprintf(stderr, "WlanATCmdSET_TONEPLAN done with success\n");
+				exit(EXIT_SUCCESS);
+				break;
+
+			case MYFTM_OPT_CMD_SET_PREFECPAD:
+				fprintf(stderr, "Command prefecpad\n");
+				WlanATCmdSET_PREFECPAD(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_LDPCEXTRASYMBOL:
+				fprintf(stderr, "Command ldpc extrasymbol\n");
+				WlanATCmdSET_LDPCEXTRASYMBOL(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_OFDMAUL_TXCONFIG:
+				fprintf(stderr, "Command odfma uplink Tx config\n");
+				if (0 != WlanATCmdSET_OFDMAULTX()) {
+					fprintf(stderr, "WlanATCmdSET_OFDMAULTX failed!\n");
+					exit(EXIT_FAILURE);
+				}
+				fprintf(stderr, "WlanATCmdSET_OFDMAULTX done with success\n");
+				exit(EXIT_SUCCESS);
+				break;
+
+			case MYFTM_OPT_CMD_SET_DUTYCYCLE:
+				fprintf(stderr, "Command Duty Cycle\n");
+				WlanATCmdSET_DUTYCYCLE(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_WRT_REGISTER_VAL:
+				fprintf(stderr, "Command to write value at register \n");
+
+				t_val = strtol(optarg, NULL, 0);
+				if (t_val >= 0)
+					WlanATCmdWRITE_REGVAL(t_val);
+				else
+					fprintf(stderr, "setting WlanATCmdWRITE_REGVAL to 0\n");
+				break;
+
+			case MYFTM_OPT_CMD_WRITE_REGISTER:
+				fprintf(stderr, "Command to write register \n");
+
+				t_val = strtol(optarg, NULL, 0);
+				if ((t_val <= 0) || (0 != WlanATCmdWRITE_REGISTER(t_val))) {
+					fprintf(stderr, "WlanATCmdWRITE_REGISTER failed!\n");
+					exit(EXIT_FAILURE);
+				}
+				fprintf(stderr, "WlanATCmdWRITE_REGISTER done with success\n");
+				exit(EXIT_SUCCESS);
+				break;
+
+			case MYFTM_OPT_CMD_READ_REGISTER:
+				fprintf(stderr, "Command to read register \n");
+
+				t_val = strtol(optarg, NULL, 0);
+				if ((t_val <= 0) || (0 != WlanATCmdREAD_REGISTER(t_val))) {
+					fprintf(stderr, "WlanATCmdREAD_REGISTER failed!\n");
+					exit(EXIT_FAILURE);
+				}
+				fprintf(stderr, "WlanATCmdREAD_REGISTER done with success\n");
+				exit(EXIT_SUCCESS);
+				break;
+
+			case MYFTM_OPT_CMD_SET_LOWPOWER:
+				fprintf(stderr, "Command to send LOW POWER config\n");
+				if (0 != WlanATCmdSET_LOWPOWER()) {
+					fprintf(stderr, "WlanATCmdSET_LOWPOWER failed!\n");
+					exit(EXIT_FAILURE);
+				}
+				fprintf(stderr, "WlanATCmdSET_LOWPOWER done with success\n");
+				exit(EXIT_SUCCESS);
+				break;
+
+			case MYFTM_OPT_CMD_SET_LOWPOWER_MODE:
+				fprintf(stderr, "Command to configured LOW POWER MODE\n");
+				WlanATCmdSET_LOWPOWER_MODE(optarg);
+				break;
+
+			case MYFTM_OPT_CMD_SET_PHYIDMASK:
+				fprintf(stderr, "Command to set PHYID MASK\n");
+				WlanATCmdSET_PHYIDMASK(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_LOWPOWER_FEATUREMASK:
+				fprintf(stderr, "Command to set Low Power Feature Mask \n");
+
+				t_val = strtol(optarg, NULL, 0);
+				if (t_val >= 0)
+					WlanATCmdSET_LOWEPOWER_FEATUREMASK(t_val);
+				else
+					fprintf(stderr, "setting LOWEPOWER_FEATUREMASK to 0\n");
+				break;
+
+			case MYFTM_OPT_CMD_SET_CALTXGAIN:
+				fprintf(stderr, "Command to set TX Gain(RF gain for WCN)\n");
+				WlanATCmdSET_CALTXGAIN(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_FORCEDRXIDX:
+				fprintf(stderr, "Command to set Forced RX gain index\n");
+				WlanATCmdSET_FORCEDRXIDX(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_SET_RSTDIR:
+				fprintf(stderr, "Command to set RSSI self test direction\n");
+				WlanATCmdSET_RSTDIR(atoi(optarg));
+				break;
+
+			case MYFTM_OPT_CMD_RST:
+				fprintf(stderr, "Command to enable RSSI self test, must be placed at end of cmd\n"
+					"Please enable dbs first if not yet: -J -B dbs, to avoid FW crash\n");
+				WlanATCmd_RST();
 				break;
 
 			case 'h':

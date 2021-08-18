@@ -1,4 +1,4 @@
-KERNEL_SRC ?= /home/qingzong/code/wifi/qca9377/4.14.98
+KERNEL_SRC ?= /lib/modules/$(shell uname -r)/build
 
 KBUILD_OPTIONS := WLAN_ROOT=$(PWD)
 KBUILD_OPTIONS += MODNAME?=wlan

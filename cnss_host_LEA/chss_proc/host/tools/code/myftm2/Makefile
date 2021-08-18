@@ -13,7 +13,7 @@ export MAKEARCH=make
 #export AR=$(TOOLPREFIX)ar
 #export LD=$(TOOLPREFIX)ld
 
-export MYFTM_TOPDIR=$(shell pwd)/
+export MYFTM_TOPDIR=$(shell pwd)
 export LIBTCMD_TOPDIR=$(MYFTM_TOPDIR)/libtcmd
 export LIBTLVUTIL_TOPDIR=$(MYFTM_TOPDIR)/libathtestcmd/libtlvutil
 export LIBTLV2_TOPDIR=$(MYFTM_TOPDIR)/libathtestcmd/libtlv2
@@ -21,7 +21,7 @@ export LIBATHTESTCMD_TOPDIR=$(MYFTM_TOPDIR)/libathtestcmd
 
 export MYFTM_MYFTM=$(MYFTM_TOPDIR)/myftm
 
-export CFLAGS= -I$(MYFTM_TOPDIR)/libnl-3.2.25/include/libnl3 -I$(MYFTM_TOPDIR)/zlib-1.2.11/include
+export CFLAGS= -I/usr/include/libnl3 -I/usr/lib  -I$(MYFTM_TOPDIR)/zlib-1.2.11/include
 
 # Use local libnl library or not
 

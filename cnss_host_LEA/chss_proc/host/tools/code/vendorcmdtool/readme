@@ -1,0 +1,17 @@
+Vendorcmdtool rely on libnl3 and libxml2 libary, if not supported on
+third party, then shall be ported and make builtin vendorcmdtool.
+
+1. Build libnl3:
+   umcompress libnl-3.2.25.tar.gz
+   ./configure --host=arm-linux CC=<cross compiler>
+   make
+   copy libnl-3.a libnl-genl-3.a static libray to top dir
+
+2. Build libxml2:
+   uncompress libxml2-2.9.8.tar.gz
+   ./configure --host=arm-linux with_minimum=yes CC=<cross compiler>
+   make
+   copy libxml2.a static library to top dir
+
+3. Build vendorcmdtool:
+   make CC=<cross compiler>

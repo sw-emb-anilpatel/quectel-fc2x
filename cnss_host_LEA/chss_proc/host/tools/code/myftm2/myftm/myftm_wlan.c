@@ -2,7 +2,7 @@
 
                      FTM WLAN Source File
 
-# Copyright (c) 2011, 2013-2018 by Qualcomm Technologies, Inc.
+# Copyright (c) 2011, 2013-2020 by Qualcomm Technologies, Inc.
 # All Rights Reserved.
 # Qualcomm Technologies Proprietary and Confidential.
 
@@ -34,10 +34,20 @@ when       who       what, where, why
 //#include "comdef.h"
 
 #include "testcmd6174.h"
-#include "libtcmd.h"
+#include <libtcmd.h>
 #include "myftm_wlan.h"
 #include "myftm_dbg.h"
 #include "art_utf_common.h"
+
+#ifdef USE_GLIB
+#include <glib.h>
+#define strlcat g_strlcat
+#define strlcpy g_strlcpy
+#else
+#include <string.h>
+#define strlcat strncat
+#define strlcpy strncpy
+#endif
 
 /* for crc32 */
 #include "zlib.h"
@@ -80,15 +90,6 @@ when       who       what, where, why
 #define FTM_WLAN_UNLOAD_CMD     "/sbin/rmmod wlan"
 #endif
 
-#ifdef USE_GLIB
-#include <glib.h>
-#define strlcat g_strlcat
-#define strlcpy g_strlcpy
-#else
-#include <string.h>
-#define strlcat strncat
-#define strlcpy strncpy
-#endif
 
 typedef enum {
     SUBCMD_DRIVER_LOAD      = 'L',
@@ -1169,6 +1170,168 @@ void WlanATCmdDPDStatus()
 {
 	DPRINTF(FTM_DBG_TRACE, "%s: Command DPD Status\n", __func__);
 	qca6174CmdDPDStatus();
+}
+
+/* Command rateBw */
+void WlanATCmdSETRateBW(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command rateBW\n", __func__);
+	qca6174CmdRateBW(val);
+}
+
+/* Command nss */
+void WlanATCmdSETNSS(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command nss\n", __func__);
+	qca6174CmdNSS(val);
+}
+
+/* Command nss */
+void WlanATCmdSETGI(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command gI\n", __func__);
+	qca6174CmdGI(val);
+}
+
+/* Command adcm */
+void WlanATCmdSETADCM(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command ofdmadcm\n", __func__);
+	qca6174CmdADCM(val);
+}
+
+/* Command ppdutype */
+void WlanATCmdSETPPDUTYPE(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command ofdmappdutype\n", __func__);
+	qca6174CmdPPDUTYPE(val);
+}
+
+/* Command linkdir */
+void WlanATCmdSETLINKDIR(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command ofdmalinkdir\n", __func__);
+	qca6174CmdLINKDIR(val);
+}
+
+/* Command ofdma toneplan */
+int WlanATCmdSET_TONEPLAN(char* val)
+{
+	int ret = 0;
+	DPRINTF(FTM_DBG_TRACE, "%s: Set Command ofdmatoneplan\n", __func__);
+	ret = qca6174Cmd_TONEPLAN(val);
+	return ret;
+}
+
+/* Command prefecpad  */
+void WlanATCmdSET_PREFECPAD(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command prefecpad\n", __func__);
+	qca6174Cmd_PREFECPAD(val);
+}
+
+/* Command ldpc extrasymbol */
+void WlanATCmdSET_LDPCEXTRASYMBOL(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command ldpc extra symbol\n", __func__);
+	qca6174Cmd_LDPCEXTRASYMBOL(val);
+}
+
+/* Command ldpc extrasymbol */
+void WlanATCmdSET_DUTYCYCLE(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command Duty Cycle\n", __func__);
+	qca6174Cmd_DUTYCYCLE(val);
+}
+
+/* Command SET OFDMA UPLINK TX CONFIG */
+int WlanATCmdSET_OFDMAULTX()
+{
+	int ret = 0;
+	DPRINTF(FTM_DBG_TRACE, "%s: Set Command ofdma uplinlk Tx command\n", __func__);
+	ret = qca6174Cmd_OFDMAUL_TX();
+	return ret;
+}
+
+/* Command to write register */
+int WlanATCmdWRITE_REGISTER(uint32_t reg)
+{
+	int ret = 0;
+	DPRINTF(FTM_DBG_TRACE, "%s: write Command register address\n", __func__);
+	ret = qca6174CmdRegWrite(reg);
+	return ret;
+}
+
+/* Command to write register */
+void WlanATCmdWRITE_REGVAL(uint32_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: write value to register \n", __func__);
+	qca6174CmdRegWriteValue(val);
+}
+/* Command to read register */
+
+int WlanATCmdREAD_REGISTER(uint32_t reg)
+{
+	int ret = 0;
+	DPRINTF(FTM_DBG_TRACE, "%s: read Command from register address\n", __func__);
+	ret = qca6174CmdRegRead(reg);
+	return ret;
+}
+
+/* Command to send low power configuration*/
+int WlanATCmdSET_LOWPOWER()
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Set Command to send LOW POWER\n", __func__);
+	return qca6174Cmd_LOWPOWER();
+}
+
+/* Command to configured low power mode */
+void WlanATCmdSET_LOWPOWER_MODE(char *val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command LOWPOWERMODE\n", __func__);
+	qca6174Set_LOWPOWER_MODE(val);
+}
+
+/* Command to phyid mask*/
+void WlanATCmdSET_PHYIDMASK(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command PHYIDMASK\n", __func__);
+	qca6174Set_PHYIDMASK(val);
+}
+
+/* Command to set low power feature mask */
+void WlanATCmdSET_LOWEPOWER_FEATUREMASK(uint32_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: Command LOWPOWER FEATUREMASK\n", __func__);
+	qca6174Set_LOWPOWER_FEATUREMASK(val);
+}
+
+/* Command to set tx gain */
+void WlanATCmdSET_CALTXGAIN(uint32_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: set TX Gain\n", __func__);
+	qca6174Set_CALTXGAIN(val);
+}
+
+/* Command to set forced rx index */
+void WlanATCmdSET_FORCEDRXIDX(uint32_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: set Forced RX gain index\n", __func__);
+	qca6174Set_FORCEDRXIDX(val);
+}
+
+/* Command to set RSSI self test direction */
+void WlanATCmdSET_RSTDIR(uint8_t val)
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: set RSSI self test direction\n", __func__);
+	qca6174Set_RSTDIR(val);
+}
+
+/* Command to send CMD_RST command to start RSSI self test */
+void WlanATCmd_RST()
+{
+	DPRINTF(FTM_DBG_TRACE, "%s: RSSI self test\n", __func__);
+	qca6174RssiSelfTest();
 }
 
 void WlanATinit()
