@@ -1,4 +1,0 @@
-.\wlan_proc\wlan\fw\target\.output\AR6320\hw.3\bin\athwlan.bin
-.\wlan_proc\wlan\fw\target\.output\AR6320\hw.3\bin\qca61x4.bin
-.\wlan_proc\wlan\fw\target\.output\AR6320\hw.3\bin\otp.bin
-.\wlan_proc\wlan\fw\target\.output\AR6320\hw.3\bin\utf.bin
