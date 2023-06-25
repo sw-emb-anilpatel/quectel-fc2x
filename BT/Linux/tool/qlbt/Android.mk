@@ -1,0 +1,11 @@
+LOCAL_PATH:= $(call my-dir)
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES:= \
+              qlbt.c
+
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_EXECUTABLES)
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE :=qlbt
+
+include $(BUILD_EXECUTABLE)
