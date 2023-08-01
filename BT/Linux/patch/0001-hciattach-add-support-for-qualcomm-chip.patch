@@ -1,4 +1,4 @@
-From cb0be12a0089cd674a4e1bfafae2699fc30c13e7 Mon Sep 17 00:00:00 2001
+From 44f85396e445c1cffad415c03d33ef54eb1d1857 Mon Sep 17 00:00:00 2001
 From: "lidong.zhou" <lidong.zhou@quectel.com>
 Date: Wed, 7 Jun 2023 20:18:56 +0800
 Subject: [PATCH] hciattach: add support for qualcomm chip
@@ -7,19 +7,19 @@ Subject: [PATCH] hciattach: add support for qualcomm chip
  Makefile.tools         |    4 +-
  tools/hciattach.c      |   29 +-
  tools/hciattach.h      |    2 +
- tools/hciattach_rome.c | 1378 ++++++++++++++++++++++++++++++++++++++++
- tools/hciattach_rome.h |  399 ++++++++++++
- 5 files changed, 1810 insertions(+), 2 deletions(-)
+ tools/hciattach_rome.c | 1357 ++++++++++++++++++++++++++++++++++++++++
+ tools/hciattach_rome.h |  405 ++++++++++++
+ 5 files changed, 1795 insertions(+), 2 deletions(-)
  mode change 100644 => 100755 tools/hciattach.c
  mode change 100644 => 100755 tools/hciattach.h
  create mode 100755 tools/hciattach_rome.c
  create mode 100755 tools/hciattach_rome.h
 
 diff --git a/Makefile.tools b/Makefile.tools
-index df4cad065..b644905f5 100644
+index 4bc355c34..c849bc2a9 100644
 --- a/Makefile.tools
 +++ b/Makefile.tools
-@@ -412,7 +412,9 @@ tools_hciattach_SOURCES = tools/hciattach.c tools/hciattach.h \
+@@ -411,7 +411,9 @@ tools_hciattach_SOURCES = tools/hciattach.c tools/hciattach.h \
  						tools/hciattach_ath3k.c \
  						tools/hciattach_qualcomm.c \
  						tools/hciattach_intel.c \
@@ -158,10 +158,10 @@ index dfa4c1e7a..fae033e21
  int bcm43xx_init(int fd, int def_speed, int speed, struct termios *ti,
 diff --git a/tools/hciattach_rome.c b/tools/hciattach_rome.c
 new file mode 100755
-index 000000000..5f5ad4d9c
+index 000000000..6dd7e2b0c
 --- /dev/null
 +++ b/tools/hciattach_rome.c
-@@ -0,0 +1,1378 @@
+@@ -0,0 +1,1357 @@
 +/*
 + *
 + *  Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
@@ -477,7 +477,8 @@ index 000000000..5f5ad4d9c
 +    if(g_soc_id == SCO_VER_QCA6698)  return 0;
 +    if(g_soc_id == SOC_VER_QCA6695)  return 0;
 +    if(g_soc_id == SOC_VER_QCA206X)  return 0;         
-+    if(g_soc_id == SOC_VER_QCA206X_G)  return 0;    
++    if(g_soc_id == SOC_VER_QCA206X_G)  return 0;
++	if(g_soc_id == SOC_VER_QCC207X)  return 0;   
 +    return -1;
 +}
 +
@@ -909,7 +910,6 @@ index 000000000..5f5ad4d9c
 +    unsigned char *nvm_byte_ptr;
 +    unsigned char bdaddr[6];
 +    int pcm_value = 0;
-+    int ibs_value = 0;
 +
 +    fprintf(stderr, "File Open (%s)\n", file_path);
 +    pFile = fopen(file_path, "r");
@@ -1018,54 +1018,23 @@ index 000000000..5f5ad4d9c
 +            {
 +                if (nvm_ptr->tag_id == TAG_NUM_27)
 +                {
-+                    ibs_value = get_value_from_config(FW_CONFIG_FILE_PATH, "IBS");
-+                    if (ibs_value >= 0)
-+                    {
-+                        if (ibs_value == FWCONF_IBS_DISABLE)
-+                        {
-+                            /* TxP Sleep Mode: Disable */
-+                            *(nvm_byte_ptr + 1) &= ~0x01;
-+                            fprintf(stderr, "ibs was disabled\n");
-+                        }
-+                        else if (ibs_value == FWCONF_IBS_ENABLE)
-+                        {
-+                            /* TxP Sleep Mode-1:UART_SIBS, 2:USB_SUSPEND, 3: GPIO_OOB, 4: UART_HWIBS */
-+                            *(nvm_byte_ptr + 1) |= 0x01;
-+                            fprintf(stderr, "ibs was enabled\n");
-+                        }
-+                        else
-+                        {
-+                            /* TxP Sleep Mode: Disable */
-+                            *(nvm_byte_ptr + 1) &= ~0x01;
-+                            fprintf(stderr, "ibs was disabled\n");
-+                        }
-+                    }
-+                    else
-+                    {
-+                        /* TxP Sleep Mode: Disable */
-+                        *(nvm_byte_ptr + 1) &= ~0x01;
-+                        fprintf(stderr, "ibs was disabled\n");
-+                    }
++                    /* TxP Sleep Mode: Disable */
++					*(nvm_byte_ptr) &= ~0x01;
++					*(nvm_byte_ptr + 1) &= ~0x01;
++                    fprintf(stderr, "ibs was disabled\n");
 +                }
 +            }
 +            else
 +            {
 +                if (nvm_ptr->tag_id == TAG_NUM_17)
 +                {
-+                    ibs_value = get_value_from_config(FW_CONFIG_FILE_PATH, "IBS");
-+                    if (ibs_value >= 0)
-+                    {
-+                        if (ibs_value == FWCONF_IBS_DISABLE)
-+                        {
-+                            nvm_byte_ptr[FWCONF_IBS_VAL_OFFSET] &=
++                    nvm_byte_ptr[FWCONF_IBS_VAL_OFFSET] &=
 +                                (~(FWCONF_IBS_ENABLE << FWCONF_IBS_VAL_BIT));
-+                        }
-+                        else if (ibs_value == FWCONF_IBS_ENABLE)
-+                        {
-+                            nvm_byte_ptr[FWCONF_IBS_VAL_OFFSET] |=
-+                                (FWCONF_IBS_ENABLE << FWCONF_IBS_VAL_BIT);
-+                        }
-+                    }
++                }
++
++				if (nvm_ptr->tag_id == TAG_NUM_27)
++                {
++                     *nvm_byte_ptr = 0;
 +                }
 +            }
 +            /* Read from file and check what PCM Configuration is required:
@@ -1125,7 +1094,13 @@ index 000000000..5f5ad4d9c
 +    unsigned char cmd[HCI_MAX_CMD_SIZE];
 +    unsigned char rsp[HCI_MAX_EVENT_SIZE];
 +
-+    fprintf(stderr, "%s: Downloading TLV Patch segment no.%d, size:%d\n", __FUNCTION__, index, seg_size);
++    fprintf(stderr, "%s: g_soc_id:0x%x Downloading TLV Patch segment no.%d, size:%d\n", __FUNCTION__, g_soc_id,index, seg_size);
++
++
++	if(g_soc_id == SOC_VER_QCA9377)
++	{
++		usleep(5*1000);
++	}
 +
 +    /* Frame the HCI CMD PKT to be sent to Controller*/
 +    frame_hci_cmd_pkt(cmd, EDL_PATCH_TLV_REQ_CMD, 0, index, seg_size);
@@ -1471,8 +1446,12 @@ index 000000000..5f5ad4d9c
 +        nvm_file_path = QCA6698_NVM_TLV_UART_2_1_PATH;
 +        break;
 +    case SOC_VER_QCA9377:
-+        rampatch_file_path = QCA6574_RAMPATCH_TLV_3_0_2_PATH;
-+        nvm_file_path = QCA6574_NVM_TLV_3_0_2_PATH;
++        rampatch_file_path = QCA9377_RAMPATCH_TLV_1_0_1_PATH;
++        nvm_file_path = QCA9377_NVM_TLV_1_0_1_PATH;
++        break;
++	case SOC_VER_QCC207X:
++		rampatch_file_path = QCC207X_RAMPATCH_TLV_UART_2_0_PATH;
++        nvm_file_path = QCC207X_NVM_TLV_UART_2_0_PATH;
 +        break;
 +    default:
 +        fprintf(stderr, "Detected unknown ROME soc id:0x%x", g_soc_id);
@@ -1542,10 +1521,10 @@ index 000000000..5f5ad4d9c
 +}
 diff --git a/tools/hciattach_rome.h b/tools/hciattach_rome.h
 new file mode 100755
-index 000000000..20ace30af
+index 000000000..0441b8d4c
 --- /dev/null
 +++ b/tools/hciattach_rome.h
-@@ -0,0 +1,399 @@
+@@ -0,0 +1,405 @@
 +/*
 + * Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
 + * Not a Contribution.
@@ -1803,6 +1782,7 @@ index 000000000..20ace30af
 +#define SOC_VER_QCA6695 0x400b0200    /* Genoa 2.0 AF51Y*/
 +#define SOC_VER_QCA206X 0x400c0200    /* QCA2066*/
 +#define SOC_VER_QCA206X_G 0x400c1211    /* QCA2066 hsp gf chip*/
++#define SOC_VER_QCC207X 0x40170200
 +
 +#define SOC_VER_WCN3990 0x40020140    /* WCN 3990*/
 +
@@ -1829,6 +1809,11 @@ index 000000000..20ace30af
 +#define QCA206X_RAMPATCH_TLV_UART_2_1_PATH    "/lib/firmware/qca/hpbtfw21.tlv"
 +#define QCA206X_NVM_TLV_UART_2_1_PATH         "/lib/firmware/qca/hpnv21.bin"
 +#define QCA206X_NVM_TLV_UART_2_1_G_PATH       "/lib/firmware/qca/hpnv21.bin"
++
++#define QCC207X_RAMPATCH_TLV_UART_2_0_PATH    "/lib/firmware/qca/hmtbtfw20.tlv"
++#define QCC207X_NVM_TLV_UART_2_0_PATH         "/lib/firmware/qca/hmtnv20.bin"
++
++
 +
 +/* This header value in rampatch file decides event handling mechanism in the HOST */
 +#define ROME_SKIP_EVT_NONE 0x00
