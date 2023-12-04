@@ -28,8 +28,7 @@
 #define BT_VENDOR_PERSIST_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include <stdio.h>
@@ -55,15 +54,10 @@ SIDE EFFECTS
   None
 
 ===========================================================================*/
-extern uint8_t bt_vendor_nv_read
-(
-  uint8_t nv_item,
-  uint8_t * rsp_buf
-);
+extern uint8_t bt_vendor_nv_read(uint8_t nv_item, uint8_t* rsp_buf);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* BT_VENDOR_PERSIST_H_ */
-

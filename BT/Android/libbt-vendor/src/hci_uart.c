@@ -26,15 +26,18 @@
 
 #define LOG_TAG "bt_vendor"
 
-#include <log/log.h>
-#include <termios.h>
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <log/log.h>
 #include <stdio.h>
-#include <unistd.h>
-#include "bt_vendor_qcom.h"
-#include "hci_uart.h"
 #include <string.h>
+#include <termios.h>
+#include <unistd.h>
+
+#include "hci_uart.h"
+#include "bt_vendor_qcom.h"
+
+#define UNUSED(x) (void)x
 
 /******************************************************************************
 **  Constants & Macros
@@ -45,12 +48,12 @@
 #endif
 
 #if (VNDUSERIAL_DBG == TRUE)
-#define VNDUSERIALDBG(param, ...) {ALOGI(param, ## __VA_ARGS__);}
+#define VNDUSERIALDBG(param, ...) \
+  { ALOGI(param, ##__VA_ARGS__); }
 #else
-#define VNDUSERIALDBG(param, ...) {}
+#define VNDUSERIALDBG(param, ...) \
+  {}
 #endif
-
-#define RESERVED(p)  if(p) ALOGI( "%s: reserved param", __FUNCTION__);
 
 /******************************************************************************
 **  Global variables
@@ -71,8 +74,7 @@ vnd_userial_cb_t vnd_userial;
 ** Returns         TRUE/FALSE
 **
 *******************************************************************************/
-uint8_t userial_to_tcio_baud(uint8_t cfg_baud, uint32_t *baud)
-{
+uint8_t userial_to_tcio_baud(uint8_t cfg_baud, uint32_t *baud) {
     if (cfg_baud == USERIAL_BAUD_115200)
         *baud = B115200;
     else if (cfg_baud == USERIAL_BAUD_4M)
@@ -99,9 +101,8 @@ uint8_t userial_to_tcio_baud(uint8_t cfg_baud, uint32_t *baud)
         *baud = B1200;
     else if (cfg_baud == USERIAL_BAUD_600)
         *baud = B600;
-    else
-    {
-        ALOGE( "userial vendor open: unsupported baud idx %i", cfg_baud);
+    else {
+        ALOGE("userial vendor open: unsupported baud idx %i", cfg_baud);
         *baud = B115200;
         return FALSE;
     }
@@ -118,62 +119,59 @@ uint8_t userial_to_tcio_baud(uint8_t cfg_baud, uint32_t *baud)
 ** Returns         uint32_t
 **
 *******************************************************************************/
-int userial_tcio_baud_to_int(uint32_t baud)
-{
-    int baud_rate =0;
+int userial_tcio_baud_to_int(uint32_t baud) {
+    int baud_rate = 0;
 
-    switch (baud)
-    {
-        case B600:
-            baud_rate = 600;
-            break;
-        case B1200:
-            baud_rate = 1200;
-            break;
-        case B9600:
-            baud_rate = 9600;
-            break;
-        case B19200:
-            baud_rate = 19200;
-            break;
-        case B57600:
-            baud_rate = 57600;
-            break;
-        case B115200:
-            baud_rate = 115200;
-            break;
-        case B230400:
-            baud_rate = 230400;
-            break;
-        case B460800:
-            baud_rate = 460800;
-            break;
-        case B921600:
-            baud_rate = 921600;
-            break;
-        case B1000000:
-            baud_rate = 1000000;
-            break;
-        case B2000000:
-            baud_rate = 2000000;
-            break;
-        case B3000000:
-            baud_rate = 3000000;
-            break;
-        case B4000000:
-            baud_rate = 4000000;
-            break;
-        default:
-            ALOGE( "%s: unsupported baud %d", __FUNCTION__, baud);
-            break;
+    switch (baud) {
+    case B600:
+        baud_rate = 600;
+        break;
+    case B1200:
+        baud_rate = 1200;
+        break;
+    case B9600:
+        baud_rate = 9600;
+        break;
+    case B19200:
+        baud_rate = 19200;
+        break;
+    case B57600:
+        baud_rate = 57600;
+        break;
+    case B115200:
+        baud_rate = 115200;
+        break;
+    case B230400:
+        baud_rate = 230400;
+        break;
+    case B460800:
+        baud_rate = 460800;
+        break;
+    case B921600:
+        baud_rate = 921600;
+        break;
+    case B1000000:
+        baud_rate = 1000000;
+        break;
+    case B2000000:
+        baud_rate = 2000000;
+        break;
+    case B3000000:
+        baud_rate = 3000000;
+        break;
+    case B4000000:
+        baud_rate = 4000000;
+        break;
+    default:
+        ALOGE("%s: unsupported baud %d", __FUNCTION__, baud);
+        break;
     }
 
-    ALOGI( "%s: Current Baudrate = %d bps", __FUNCTION__, baud_rate);
+    ALOGI("%s: Current Baudrate = %d bps", __FUNCTION__, baud_rate);
     return baud_rate;
 }
 
-
-#if (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
+#if (BT_WAKE_VIA_USERIAL_IOCTL == TRUE)
 /*******************************************************************************
 **
 ** Function        userial_ioctl_init_bt_wake
@@ -185,18 +183,15 @@ int userial_tcio_baud_to_int(uint32_t baud)
 ** Returns         none
 **
 *******************************************************************************/
-void userial_ioctl_init_bt_wake(int fd)
-{
+void userial_ioctl_init_bt_wake(int fd) {
     uint32_t bt_wake_state;
 
     /* assert BT_WAKE through ioctl */
     ioctl(fd, USERIAL_IOCTL_BT_WAKE_ASSERT, NULL);
     ioctl(fd, USERIAL_IOCTL_BT_WAKE_GET_ST, &bt_wake_state);
-    VNDUSERIALDBG("userial_ioctl_init_bt_wake read back BT_WAKE state=%i", \
-               bt_wake_state);
+    VNDUSERIALDBG("userial_ioctl_init_bt_wake read back BT_WAKE state=%i", bt_wake_state);
 }
-#endif // (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
-
+#endif  // (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
 
 /*****************************************************************************
 **   Userial Vendor API Functions
@@ -211,8 +206,7 @@ void userial_ioctl_init_bt_wake(int fd)
 ** Returns         None
 **
 *******************************************************************************/
-void userial_vendor_init(void)
-{
+void userial_vendor_init(void) {
     vnd_userial.fd = -1;
     snprintf(vnd_userial.port_name, VND_PORT_NAME_MAXLEN, "%s", BT_HS_UART_DEVICE);
 }
@@ -226,62 +220,55 @@ void userial_vendor_init(void)
 ** Returns         device fd
 **
 *******************************************************************************/
-int userial_vendor_open(tUSERIAL_CFG *p_cfg)
-{
+int userial_vendor_open(tUSERIAL_CFG *p_cfg) {
     uint32_t baud;
     uint8_t data_bits;
     uint16_t parity;
     uint8_t stop_bits;
 
-    vnd_userial.fd = -1;
+    userial_vendor_close();
 
-    if (!userial_to_tcio_baud(p_cfg->baud, &baud))
-    {
+    if (!userial_to_tcio_baud(p_cfg->baud, &baud)) {
         return -1;
     }
 
-    if(p_cfg->fmt & USERIAL_DATABITS_8)
+    if (p_cfg->fmt & USERIAL_DATABITS_8)
         data_bits = CS8;
-    else if(p_cfg->fmt & USERIAL_DATABITS_7)
+    else if (p_cfg->fmt & USERIAL_DATABITS_7)
         data_bits = CS7;
-    else if(p_cfg->fmt & USERIAL_DATABITS_6)
+    else if (p_cfg->fmt & USERIAL_DATABITS_6)
         data_bits = CS6;
-    else if(p_cfg->fmt & USERIAL_DATABITS_5)
+    else if (p_cfg->fmt & USERIAL_DATABITS_5)
         data_bits = CS5;
-    else
-    {
+    else {
         ALOGE("userial vendor open: unsupported data bits");
         return -1;
     }
 
-    if(p_cfg->fmt & USERIAL_PARITY_NONE)
+    if (p_cfg->fmt & USERIAL_PARITY_NONE)
         parity = 0;
-    else if(p_cfg->fmt & USERIAL_PARITY_EVEN)
+    else if (p_cfg->fmt & USERIAL_PARITY_EVEN)
         parity = PARENB;
-    else if(p_cfg->fmt & USERIAL_PARITY_ODD)
+    else if (p_cfg->fmt & USERIAL_PARITY_ODD)
         parity = (PARENB | PARODD);
-    else
-    {
+    else {
         ALOGE("userial vendor open: unsupported parity bit mode");
         return -1;
     }
 
-    if(p_cfg->fmt & USERIAL_STOPBITS_1)
+    if (p_cfg->fmt & USERIAL_STOPBITS_1)
         stop_bits = 0;
-    else if(p_cfg->fmt & USERIAL_STOPBITS_2)
+    else if (p_cfg->fmt & USERIAL_STOPBITS_2)
         stop_bits = CSTOPB;
-    else
-    {
+    else {
         ALOGE("userial vendor open: unsupported stop bits");
         return -1;
     }
 
     ALOGI("userial vendor open: opening %s", vnd_userial.port_name);
-
-    if ((vnd_userial.fd = open(vnd_userial.port_name, O_RDWR|O_NOCTTY)) == -1)
-    {
-        ALOGE("userial vendor open: unable to open %s: %s(%d)", vnd_userial.port_name,
-            strerror(errno), errno);
+    // if ((vnd_userial.fd = open(vnd_userial.port_name, O_RDWR|O_NOCTTY|O_NONBLOCK)) == -1)
+    if ((vnd_userial.fd = open(vnd_userial.port_name, O_RDWR | O_NOCTTY)) == -1) {
+        ALOGE("userial vendor open: unable to open %s", vnd_userial.port_name);
         return -1;
     }
 
@@ -303,7 +290,7 @@ int userial_vendor_open(tUSERIAL_CFG *p_cfg)
 
     tcflush(vnd_userial.fd, TCIOFLUSH);
 
-#if (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
+#if (BT_WAKE_VIA_USERIAL_IOCTL == TRUE)
     userial_ioctl_init_bt_wake(vnd_userial.fd);
 #endif
 
@@ -321,22 +308,19 @@ int userial_vendor_open(tUSERIAL_CFG *p_cfg)
 ** Returns         None
 **
 *******************************************************************************/
-void userial_vendor_close(void)
-{
+void userial_vendor_close(void) {
     int result;
 
-    if (vnd_userial.fd == -1)
-        return;
+    if (vnd_userial.fd == -1) return;
 
-#if (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
+#if (BT_WAKE_VIA_USERIAL_IOCTL == TRUE)
     /* de-assert bt_wake BEFORE closing port */
     ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_DEASSERT, NULL);
 #endif
 
     ALOGI("device fd = %d close", vnd_userial.fd);
 
-    if ((result = close(vnd_userial.fd)) < 0)
-        ALOGE( "close(fd:%d) FAILED result:%d", vnd_userial.fd, result);
+    if ((result = close(vnd_userial.fd)) < 0) ALOGE("close(fd:%d) FAILED result:%d", vnd_userial.fd, result);
 
     vnd_userial.fd = -1;
 }
@@ -350,8 +334,7 @@ void userial_vendor_close(void)
 ** Returns         None
 **
 *******************************************************************************/
-void userial_vendor_set_baud(uint8_t userial_baud)
-{
+void userial_vendor_set_baud(uint8_t userial_baud) {
     uint32_t tcio_baud;
 
     VNDUSERIALDBG("## userial_vendor_set_baud: %d", userial_baud);
@@ -361,7 +344,7 @@ void userial_vendor_set_baud(uint8_t userial_baud)
     cfsetospeed(&vnd_userial.termios, tcio_baud);
     cfsetispeed(&vnd_userial.termios, tcio_baud);
     tcsetattr(vnd_userial.fd, TCSADRAIN, &vnd_userial.termios); /* don't change speed until last write done */
-//    tcflush(vnd_userial.fd, TCIOFLUSH);
+    // tcflush(vnd_userial.fd, TCIOFLUSH);
 }
 
 /*******************************************************************************
@@ -373,11 +356,9 @@ void userial_vendor_set_baud(uint8_t userial_baud)
 ** Returns         int
 **
 *******************************************************************************/
-int userial_vendor_get_baud(void)
-{
-    if (vnd_userial.fd == -1)
-    {
-        ALOGE( "%s: uart port(%s) has not been opened", __FUNCTION__, BT_HS_UART_DEVICE );
+int userial_vendor_get_baud(void) {
+    if (vnd_userial.fd == -1) {
+        ALOGE("%s: uart port(%s) has not been opened", __FUNCTION__, BT_HS_UART_DEVICE);
         return -1;
     }
 
@@ -393,42 +374,41 @@ int userial_vendor_get_baud(void)
 ** Returns         None
 **
 *******************************************************************************/
-int userial_vendor_ioctl(userial_vendor_ioctl_op_t op, int *p_data)
-{
-    int err = -1;
+int userial_vendor_ioctl(userial_vendor_ioctl_op_t op, int *p_data) {
+    int err = 0;
 
-    switch(op)
-    {
-#if (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
-        case USERIAL_OP_ASSERT_BT_WAKE:
-            VNDUSERIALDBG("## userial_vendor_ioctl: Asserting BT_Wake ##");
-            err = ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_ASSERT, NULL);
-            break;
+    switch (op) {
+#if (BT_WAKE_VIA_USERIAL_IOCTL == TRUE)
+    case USERIAL_OP_ASSERT_BT_WAKE:
+        VNDUSERIALDBG("## userial_vendor_ioctl: Asserting BT_Wake ##");
+        err = ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_ASSERT, NULL);
+        break;
 
-        case USERIAL_OP_DEASSERT_BT_WAKE:
-            VNDUSERIALDBG("## userial_vendor_ioctl: De-asserting BT_Wake ##");
-            err = ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_DEASSERT, NULL);
-            break;
+    case USERIAL_OP_DEASSERT_BT_WAKE:
+        VNDUSERIALDBG("## userial_vendor_ioctl: De-asserting BT_Wake ##");
+        err = ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_DEASSERT, NULL);
+        break;
 
-        case USERIAL_OP_GET_BT_WAKE_STATE:
-            err = ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_GET_ST, p_data);
-            break;
+    case USERIAL_OP_GET_BT_WAKE_STATE:
+        err = ioctl(vnd_userial.fd, USERIAL_IOCTL_BT_WAKE_GET_ST, p_data);
+        break;
 #endif  //  (BT_WAKE_VIA_USERIAL_IOCTL==TRUE)
-        case USERIAL_OP_FLOW_ON:
-            ALOGI("## userial_vendor_ioctl: UART Flow On ");
-            *p_data |=TIOCM_RTS;
-            err = ioctl(vnd_userial.fd, TIOCMSET, p_data);
-            break;
+    case USERIAL_OP_FLOW_ON:
+        ALOGI("## userial_vendor_ioctl: UART Flow On ");
+        *p_data |= TIOCM_RTS;
+        err = ioctl(vnd_userial.fd, TIOCMSET, p_data);
+        break;
 
-        case USERIAL_OP_FLOW_OFF:
-            ALOGI("## userial_vendor_ioctl: UART Flow Off ");
-            ioctl(vnd_userial.fd, TIOCMGET, p_data);
-            *p_data &= ~TIOCM_RTS;
-            err = ioctl(vnd_userial.fd, TIOCMSET, p_data);
-            break;
+    case USERIAL_OP_FLOW_OFF:
+        ALOGI("## userial_vendor_ioctl: UART Flow Off ");
+        ioctl(vnd_userial.fd, TIOCMGET, p_data);
+        *p_data &= ~TIOCM_RTS;
+        err = ioctl(vnd_userial.fd, TIOCMSET, p_data);
+        break;
 
-        default:
-            break;
+    default:
+        err = 0;
+        break;
     }
 
     return err;
@@ -444,10 +424,9 @@ int userial_vendor_ioctl(userial_vendor_ioctl_op_t op, int *p_data)
 **                 Otherwise : Fail
 **
 *******************************************************************************/
-int userial_set_port(char *p_conf_name, char *p_conf_value, int param)
-{
-    RESERVED(p_conf_name);
-    RESERVED(param);
+int userial_set_port(char *p_conf_name, char *p_conf_value, int param) {
+    UNUSED(p_conf_name);
+    UNUSED(param);
     strlcpy(vnd_userial.port_name, p_conf_value, VND_PORT_NAME_MAXLEN);
 
     return 0;
@@ -462,8 +441,7 @@ int userial_set_port(char *p_conf_name, char *p_conf_value, int param)
 ** Returns         int: size to read
 **
 *******************************************************************************/
-int read_hci_event(int fd, unsigned char* buf, int size)
-{
+int read_hci_event(int fd, unsigned char *buf, int size) {
     int remain, r;
     int count = 0;
 
@@ -477,50 +455,44 @@ int read_hci_event(int fd, unsigned char* buf, int size)
     /* The first byte identifies the packet type. For HCI event packets, it
      * should be 0x04, so we read until we get to the 0x04. */
     while (1) {
-            r = read(fd, buf, 1);
-            if (r <= 0)
-                    return -1;
-            if (buf[0] == 0x04)
-                    break;
+        r = read(fd, buf, 1);
+        if (r <= 0) return -1;
+        if (buf[0] == 0x04) break;
     }
     count++;
 
     /* The next two bytes are the event code and parameter total length. */
     while (count < 3) {
-            r = read(fd, buf + count, 3 - count);
-            if (r <= 0)
-                    return -1;
-            count += r;
+        r = read(fd, buf + count, 3 - count);
+        if (r <= 0) return -1;
+        count += r;
     }
 
     /* Now we read the parameters. */
     if (buf[2] < (size - 3))
-            remain = buf[2];
+        remain = buf[2];
     else
-            remain = size - 3;
+        remain = size - 3;
 
     while ((count - 3) < remain) {
-            r = read(fd, buf + count, remain - (count - 3));
-            if (r <= 0)
-                    return -1;
-            count += r;
+        r = read(fd, buf + count, remain - (count - 3));
+        if (r <= 0) return -1;
+        count += r;
     }
     return count;
 }
 
-int userial_clock_operation(int fd, int cmd)
-{
+int userial_clock_operation(int fd, int cmd) {
     int ret = 0;
 
-    switch (cmd)
-    {
-        case USERIAL_OP_CLK_ON:
-        case USERIAL_OP_CLK_OFF:
-             ioctl(fd, cmd);
-             break;
-        case USERIAL_OP_CLK_STATE:
-             ret = ioctl(fd, cmd);
-             break;
+    switch (cmd) {
+    case USERIAL_OP_CLK_ON:
+    case USERIAL_OP_CLK_OFF:
+        ioctl(fd, cmd);
+        break;
+    case USERIAL_OP_CLK_STATE:
+        ret = ioctl(fd, cmd);
+        break;
     }
 
     return ret;

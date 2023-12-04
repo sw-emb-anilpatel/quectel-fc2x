@@ -27,10 +27,10 @@
 #ifndef HCI_SMD_H
 #define HCI_SMD_H
 
-#define APPS_RIVA_BT_ACL_CH  "/dev/smd2"
-#define APPS_RIVA_BT_CMD_CH  "/dev/smd3"
+#define APPS_RIVA_BT_ACL_CH "/dev/smd2"
+#define APPS_RIVA_BT_CMD_CH "/dev/smd3"
 
-int bt_hci_init_transport ( int *pFd );
+int bt_hci_init_transport(int *pFd);
 
 int bt_hci_deinit_transport(int *pFd);
 
