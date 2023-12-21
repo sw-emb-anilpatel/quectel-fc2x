@@ -2001,9 +2001,9 @@ ol_tx_vdev_set_bundle_require(uint8_t vdev_id, unsigned long tx_bytes,
 	old_bundle_required = vdev->bundling_reqired;
 	high_th_temp = high_th * time_in_ms * 1500;
 	low_th_temp = low_th * time_in_ms * 1500;
-	if (tx_bytes > do_div(high_th_temp,1000))
+	if (tx_bytes > vos_do_div(high_th_temp,1000))
 		vdev->bundling_reqired = true;
-	else if (tx_bytes < do_div(high_th_temp,1000))
+	else if (tx_bytes < vos_do_div(low_th_temp,1000))
 		vdev->bundling_reqired = false;
 
 	if (old_bundle_required != vdev->bundling_reqired)
