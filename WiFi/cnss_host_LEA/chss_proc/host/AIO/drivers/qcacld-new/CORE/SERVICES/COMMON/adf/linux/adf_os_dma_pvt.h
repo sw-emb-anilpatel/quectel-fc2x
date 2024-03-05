@@ -43,7 +43,7 @@
 #include <adf_os_types.h>
 #include <adf_os_util.h>
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0)
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 9, 16)
 #define __adf_os_dma_alloc_noncoherent(dev, size, daddr, flag) dma_alloc_pages(dev, size, daddr, DMA_BIDIRECTIONAL, flag)
 #define __adf_os_dma_free_noncoherent(dev, size, vddr, daddr) dma_free_pages(dev, size, vddr, daddr, DMA_BIDIRECTIONAL)
 #elif LINUX_VERSION_CODE >= KERNEL_VERSION(4, 12, 0)
