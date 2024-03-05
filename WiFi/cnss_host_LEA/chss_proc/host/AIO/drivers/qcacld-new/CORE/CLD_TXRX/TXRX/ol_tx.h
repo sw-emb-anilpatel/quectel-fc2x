@@ -110,8 +110,14 @@ adf_nbuf_t
 ol_tx_ll_queue(ol_txrx_vdev_handle vdev, adf_nbuf_t msdu_list);
 
 #ifdef QCA_SUPPORT_TXRX_DRIVER_TCP_DEL_ACK
+
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5,15,0))
+enum hrtimer_restart
+ol_tx_hl_vdev_tcp_del_ack_timer(struct hrtimer *timer);
+#else
 adf_os_enum_hrtimer_t
 ol_tx_hl_vdev_tcp_del_ack_timer(adf_os_hrtimer_t *timer);
+#endif
 
 void tcp_del_ack_tasklet(unsigned long data);
 
