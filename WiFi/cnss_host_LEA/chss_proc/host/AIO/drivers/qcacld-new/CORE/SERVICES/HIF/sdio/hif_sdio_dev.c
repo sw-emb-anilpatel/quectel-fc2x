@@ -201,7 +201,8 @@ static inline int hif_start_rx_completion_thread(HIF_SDIO_DEVICE *pDev)
 		pDev->pRecvTask->rx_completion_task = kthread_create(rx_completion_task,
 			(void *)pDev,	"AR6K RxCompletion");
 #ifdef CONFIG_PERF_NON_QC_PLATFORM
-                sched_setscheduler(pDev->pRecvTask->rx_completion_task, SCHED_FIFO, &param);
+                //sched_setscheduler(pDev->pRecvTask->rx_completion_task, SCHED_FIFO, &param);
+		sched_set_fifo(pDev->pRecvTask->rx_completion_task);
 #endif
 		if (IS_ERR(pDev->pRecvTask->rx_completion_task)) {
 			pDev->pRecvTask->rx_completion_shutdown = 1;

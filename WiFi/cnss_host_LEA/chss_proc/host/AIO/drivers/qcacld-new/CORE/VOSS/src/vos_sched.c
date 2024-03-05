@@ -597,7 +597,8 @@ vos_sched_open
                                                  pSchedContext,
                                                  "VosTlshimRxThread");
 #ifdef CONFIG_PERF_NON_QC_PLATFORM
-  sched_setscheduler(pSchedContext->TlshimRxThread, SCHED_FIFO, &param);
+  //sched_setscheduler(pSchedContext->TlshimRxThread, SCHED_FIFO, &param);
+  sched_set_fifo(pSchedContext->TlshimRxThread);
 #endif
   if (IS_ERR(pSchedContext->TlshimRxThread))
   {

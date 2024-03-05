@@ -15878,7 +15878,8 @@ static void hdd_set_ixc_prio(void *priv)
                 memset(comm, 0, sizeof(comm));
                 strlcpy(comm, task->comm, sizeof(comm));
                 if(strstr(comm, "ixchariot") || strstr(comm, "iperf")) {
-                    sched_setscheduler(task, SCHED_FIFO, &param);
+                    //sched_setscheduler(task, SCHED_FIFO, &param);
+		    sched_set_fifo(task);
 #ifdef CONFIG_PERF_MODE
                     enable_wlan_perf_mode();
 #endif
