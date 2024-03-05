@@ -353,6 +353,8 @@ CONFIG_IPA_UC_OFFLOAD := 1
 endif
 endif
 
+CONFIG_FW_RAM_DUMP_TO_PROC := y
+
 #Enable Signed firmware support for split binary format
 CONFIG_QCA_SIGNED_SPLIT_BINARY_SUPPORT := 0
 
