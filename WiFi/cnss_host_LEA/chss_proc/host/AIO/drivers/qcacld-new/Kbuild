@@ -1,5 +1,7 @@
 # We can build either as part of a standalone Kernel build or as
 # an external module.  Determine which mechanism is being used
+KERNEL_SRC_PATH=$(KBUILD_OUTPUT)/../kernel-source
+
 ifeq ($(MODNAME),)
 	KERNEL_BUILD := 1
 else
@@ -983,7 +985,7 @@ WDI_INC :=	$(WDI_CP_INC) \
 
 WCNSS_INC :=	-I$(WLAN_ROOT)/wcnss/inc
 
-LINUX_INC :=	-Iinclude/linux
+LINUX_INC :=	-I$(KERNEL_SRC_PATH)/include/linux
 
 INCS :=		$(HDD_INC) \
 		$(EPPING_INC) \
@@ -1014,6 +1016,8 @@ INCS +=		$(WMA_INC) \
 
 INCS +=		$(HIF_INC) \
 		$(BMI_INC)
+
+INCS += $(LINUX_INC)
 
 ifeq ($(CONFIG_REMOVE_PKT_LOG), 0)
 INCS +=		$(PKTLOG_INC)
