@@ -106,7 +106,7 @@ drivers_firmware_transfer:
 
 drivers_clean:
 	@echo Clean drivers
-	cd ${WLAN_DRIVER_TOPDIR} && ${MAKEARCH} driver_clean
+	cd ${WLAN_DRIVER_TOPDIR} && ${MAKEARCH} qcacld_clean
 
 common_patch: wpa_supplicant_patch
 	@echo Start Common Patches

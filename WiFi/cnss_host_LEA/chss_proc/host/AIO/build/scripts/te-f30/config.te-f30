@@ -1,9 +1,9 @@
 #
 # Please modify KERNELPATH, KERNELARCH and TOOLPREFIX to meet your environment
 #
-export KERNELPATH=/lib/modules/${shell uname -r}/build
-export KERNELARCH=i386
-export TOOLPREFIX=
+export KERNELPATH=${KBUILD_OUTPUT}
+export KERNELARCH=${ARCH}
+export TOOLPREFIX=${CROSS_COMPILE}
 
 export CONFIG_NO_USE_BACKPORTS=y
 export CONFIG_CFG80211_DEPEND_ON_KERNEL=y
